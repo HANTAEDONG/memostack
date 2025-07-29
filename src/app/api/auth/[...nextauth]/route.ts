@@ -5,7 +5,7 @@ import { SupabaseAdapter } from "@next-auth/supabase-adapter";
 
 export const authOptions = {
   adapter: SupabaseAdapter({
-    url: process.env.SUPABASE_URL!,
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
     secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
   }),
   providers: [
@@ -18,6 +18,15 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  callbacks: {
+    async session({ session, user }) {
+      if (session?.user) {
+        session.user.id = user.id;
+      }
+      return session;
+    },
+  },
+  debug: process.env.NODE_ENV === "development",
 };
 
 const handler = NextAuth(authOptions);
