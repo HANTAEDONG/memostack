@@ -35,6 +35,9 @@ importers:
       lucide:
         specifier: ^0.533.0
         version: 0.533.0
+      lucide-react:
+        specifier: ^0.533.0
+        version: 0.533.0(react@19.1.0)
       next:
         specifier: 15.4.4
         version: 15.4.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -1633,6 +1636,11 @@ packages:
   lru-cache@6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
+
+  lucide-react@0.533.0:
+    resolution: {integrity: sha512-XwRo6CQowPRe1cfBJITmHytjR3XS4AZpV6rrBFEzoghARgyU2RK3yNRSnRkSFFSQJWFdQ8f4Wk1awgLLSy1NCQ==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   lucide@0.533.0:
     resolution: {integrity: sha512-RznrBAvO9m3udMoDBfbrvwWD/Y3J2NNqotUDh8u+1nikIeErQwZ28WkovP1ZMhCvUQ2/ziL/UEmiGrKfmZm+kg==}
@@ -3945,6 +3953,10 @@ snapshots:
   lru-cache@6.0.0:
     dependencies:
       yallist: 4.0.0
+
+  lucide-react@0.533.0(react@19.1.0):
+    dependencies:
+      react: 19.1.0
 
   lucide@0.533.0: {}
 
