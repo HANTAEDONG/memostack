@@ -1,2 +1,44 @@
 @import "tailwindcss";
-@import "tailwindcss/typograph";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html {
+    font-family: system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .prose {
+    @apply text-gray-900 dark:text-white;
+  }
+  .prose h1 {
+    @apply text-3xl font-bold mb-4;
+  }
+  .prose h2 {
+    @apply text-2xl font-semibold mb-3;
+  }
+  .prose h3 {
+    @apply text-xl font-medium mb-2;
+  }
+  .prose p {
+    @apply mb-4;
+  }
+  .prose ul {
+    @apply list-disc list-inside mb-4;
+  }
+  .prose ol {
+    @apply list-decimal list-inside mb-4;
+  }
+  .prose li {
+    @apply mb-1;
+  }
+  .prose blockquote {
+    @apply border-l-4 border-gray-300 pl-4 italic;
+  }
+  .prose code {
+    @apply bg-gray-100 px-1 py-0.5 rounded text-sm;
+  }
+  .prose pre {
+    @apply bg-gray-100 p-4 rounded overflow-x-auto;
+  }
+}
