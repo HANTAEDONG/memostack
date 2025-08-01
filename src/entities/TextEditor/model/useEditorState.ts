@@ -22,6 +22,7 @@ export const useEditorState = (editor: Editor | null) => {
       taskList: false,
       link: false,
       highlight: false,
+      textAlign: null,
     },
   });
 
@@ -53,6 +54,9 @@ export const useEditorState = (editor: Editor | null) => {
         taskList: editor.isActive("taskList"),
         link: editor.isActive("link"),
         highlight: editor.isActive("highlight"),
+        textAlign: editor.isActive("textAlign")
+          ? editor.getAttributes("textAlign").align
+          : null,
       },
     });
   }, [editor]);
