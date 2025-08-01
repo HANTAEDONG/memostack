@@ -66,6 +66,8 @@ export interface EditorAction {
   toggleBulletList: () => void;
   toggleTaskList: () => void;
   setHorizontalRule: () => void;
+  toggleHighlight: () => void;
+  toggleLink: () => void;
   setLink: (href: string) => void;
   unsetLink: () => void;
   undo: () => void;
