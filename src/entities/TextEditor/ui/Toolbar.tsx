@@ -1,8 +1,7 @@
-import { Italic, Redo, Strikethrough, Underline } from "lucide-react";
 import { Editor } from "@tiptap/react";
 import { getEditorActions } from "../lib/editor.actions";
 import ToolbarButton from "./ToolbarButton";
-import LucideIcon from "@/shared/ui/Icon/LucideIcon";
+import ToolbarIcon from "./ToolbarIcon";
 import ToolbarDropDown from "./ToolbarDropDown";
 import { useRef } from "react";
 import { useEditorState } from "../lib/useEditorState";
@@ -39,7 +38,7 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
             }}
             disabled={!editor?.can().undo()}
           >
-            <LucideIcon name="Undo" />
+            <ToolbarIcon name="Undo" />
           </ToolbarButton>
           <ToolbarButton
             className={`w-8 h-8 flex items-center justify-center ${
@@ -48,46 +47,36 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
             onClick={() => actions?.redo()}
             disabled={!editor?.can().redo()}
           >
-            <Redo size={16} />
+            <ToolbarIcon name="Redo" />
           </ToolbarButton>
         </div>
         <div className="flex gap-1 border-r border-gray-200 pr-2">
           <ToolbarDropDown options={headingOptions} editor={editor} ref={ref} />
           <ToolbarDropDown options={listOptions} editor={editor} ref={ref} />
+          <ToolbarButton onClick={() => actions?.toggleCodeBlock()}>
+            <ToolbarIcon name="Code" />
+          </ToolbarButton>
         </div>
         <div className="flex gap-1 border-r border-gray-200 pr-2">
           <ToolbarButton onClick={() => actions?.toggleBold()}>
-            <LucideIcon
-              name="Bold"
-              className={`${
-                editorState.activeMarks.bold ? "text-blue-500" : "text-black"
-              }`}
-            />
+            <ToolbarIcon name="Bold" isActive={editorState.activeMarks.bold} />
           </ToolbarButton>
           <ToolbarButton onClick={() => actions?.toggleItalic()}>
-            <Italic
-              size={16}
-              className={`${
-                editorState.activeMarks.italic ? "text-blue-500" : "text-black"
-              }`}
+            <ToolbarIcon
+              name="Italic"
+              isActive={editorState.activeMarks.italic}
             />
           </ToolbarButton>
           <ToolbarButton onClick={() => actions?.toggleUnderline()}>
-            <Underline
-              size={16}
-              className={`${
-                editorState.activeMarks.underline
-                  ? "text-blue-500"
-                  : "text-black"
-              }`}
+            <ToolbarIcon
+              name="Underline"
+              isActive={editorState.activeMarks.underline}
             />
           </ToolbarButton>
           <ToolbarButton onClick={() => actions?.toggleStrike()}>
-            <Strikethrough
-              size={16}
-              className={`${
-                editorState.activeMarks.strike ? "text-blue-500" : "text-black"
-              }`}
+            <ToolbarIcon
+              name="Strikethrough"
+              isActive={editorState.activeMarks.strike}
             />
           </ToolbarButton>
         </div>
