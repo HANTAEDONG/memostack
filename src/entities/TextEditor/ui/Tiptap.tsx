@@ -3,11 +3,18 @@
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import Toolbar from "./Toolbar";
+import TextAlign from "@tiptap/extension-text-align";
 import { EditorContent, useEditor } from "@tiptap/react";
 
 const Tiptap = () => {
   const editor = useEditor({
-    extensions: [StarterKit, Highlight],
+    extensions: [
+      StarterKit,
+      Highlight,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
+    ],
     immediatelyRender: false,
     autofocus: false,
     editorProps: {
