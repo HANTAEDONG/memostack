@@ -19,6 +19,7 @@ export type NodeType =
   | "link";
 
 export type HeadingLevel = 1 | 2 | 3;
+export type TextAlign = "left" | "center" | "right" | "justify";
 
 export interface ActiveMarks extends Record<MarkType, boolean> {
   bold: boolean;
@@ -32,6 +33,7 @@ export interface ActiveMarks extends Record<MarkType, boolean> {
 
 export interface ActiveNodes extends Record<NodeType, boolean> {
   heading: HeadingLevel | null;
+  textAlign: TextAlign | null;
   highlight: boolean;
 }
 
@@ -66,6 +68,7 @@ export interface EditorAction {
   toggleBulletList: () => void;
   toggleTaskList: () => void;
   setHorizontalRule: () => void;
+  setTextAlign: (align: TextAlign) => void;
   toggleHighlight: () => void;
   toggleLink: () => void;
   setLink: (href: string) => void;
