@@ -1,5 +1,5 @@
 import { Editor } from "@tiptap/react";
-import { EditorAction } from "../model/editor.types";
+import { EditorAction, TextAlign } from "../model/editor.types";
 
 export class EditorActions implements EditorAction {
   protected editor: Editor;
@@ -60,9 +60,9 @@ export class EditorActions implements EditorAction {
   // setImage(src: string, alt?: string) {
   //   return this.editor.chain().focus().setImage({ src, alt }).run();
   // }
-  // setTextAlign(align: "left" | "center" | "right" | "justify") {
-  //   return this.editor.chain().focus().setTextAlign(align).run();
-  // }
+  setTextAlign(align: TextAlign) {
+    return this.editor.chain().focus().setTextAlign(align).run();
+  }
   undo() {
     return this.editor.chain().focus().undo().run();
   }
@@ -93,13 +93,4 @@ export const getEditorActions = (editor?: Editor): EditorActions | null => {
     globalEditorActions = EditorActions.create(editor);
   }
   return globalEditorActions;
-};
-
-export const setEditorActions = (editor: Editor): EditorActions => {
-  globalEditorActions = EditorActions.create(editor);
-  return globalEditorActions;
-};
-
-export const clearEditorActions = (): void => {
-  globalEditorActions = null;
 };
