@@ -11,7 +11,6 @@ import {
   getActiveOptions,
   listOptions,
 } from "../lib/editor.options";
-import { DropdownOption } from "../model/editor.types";
 
 const Toolbar = ({ editor }: { editor: Editor }) => {
   const actions = getEditorActions(editor);
@@ -23,20 +22,6 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
     "현재 활성화된 옵션들:",
     activeOptions.map((opt) => opt.label)
   );
-
-  const HeadingOptions = headingOptions.map((option) => ({
-    key: option.label,
-    element: <LucideIcon name={option.icon} size={20} />,
-    isActive: option.isActive ? option.isActive(editor) : false,
-    action: () => option.action(editor),
-  })) as DropdownOption[];
-
-  const ListOptions = listOptions.map((option) => ({
-    key: option.label,
-    element: <LucideIcon name={option.icon} size={20} />,
-    isActive: option.isActive ? option.isActive(editor) : false,
-    action: () => option.action(editor),
-  })) as DropdownOption[];
 
   return (
     <div className="w-full h-[44px] relative flex justify-center items-center bg-white dark:bg-[rgb(14, 14, 17)] border-b border-gray-200">
@@ -67,8 +52,8 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
           </ToolbarButton>
         </div>
         <div className="flex gap-1 border-r border-gray-200 pr-2">
-          <ToolbarDropDown options={HeadingOptions} ref={ref} />
-          <ToolbarDropDown options={ListOptions} ref={ref} />
+          <ToolbarDropDown options={headingOptions} editor={editor} ref={ref} />
+          <ToolbarDropDown options={listOptions} editor={editor} ref={ref} />
         </div>
         <div className="flex gap-1 border-r border-gray-200 pr-2">
           <ToolbarButton onClick={() => actions?.toggleBold()}>
