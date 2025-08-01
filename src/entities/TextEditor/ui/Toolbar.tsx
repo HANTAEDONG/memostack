@@ -1,46 +1,42 @@
-import {
-  Heading1,
-  Heading2,
-  Heading3,
-  Italic,
-  Redo,
-  Strikethrough,
-  Underline,
-} from "lucide-react";
-
+import { Italic, Redo, Strikethrough, Underline } from "lucide-react";
 import { Editor } from "@tiptap/react";
-import { EditorActions } from "../lib/editor.actions";
+import { getEditorActions } from "../lib/editor.actions";
 import ToolbarButton from "./ToolbarButton";
 import LucideIcon from "@/shared/ui/Icon/LucideIcon";
 import ToolbarDropDown from "./ToolbarDropDown";
 import { useRef } from "react";
 import { useEditorState } from "../lib/useEditorState";
+import {
+  headingOptions,
+  getActiveOptions,
+  listOptions,
+} from "../lib/editor.options";
+import { DropdownOption } from "../model/editor.types";
 
 const Toolbar = ({ editor }: { editor: Editor }) => {
-  const actions = new EditorActions(editor);
+  const actions = getEditorActions(editor);
   const ref = useRef<HTMLDivElement>(null);
   const { editorState } = useEditorState(editor);
 
-  const HeadingOptions = [
-    {
-      key: "제목1",
-      element: <Heading1 size={20} />,
-      isActive: editor?.isActive("heading", { level: 1 }),
-      action: () => editor?.chain().focus().toggleHeading({ level: 1 }).run(),
-    },
-    {
-      key: "제목2",
-      element: <Heading2 size={20} />,
-      isActive: editor?.isActive("heading", { level: 2 }),
-      action: () => editor?.chain().focus().toggleHeading({ level: 2 }).run(),
-    },
-    {
-      key: "제목3",
-      element: <Heading3 size={20} />,
-      isActive: editor?.isActive("heading", { level: 3 }),
-      action: () => editor?.chain().focus().toggleHeading({ level: 3 }).run(),
-    },
-  ];
+  const activeOptions = getActiveOptions(editor);
+  console.log(
+    "현재 활성화된 옵션들:",
+    activeOptions.map((opt) => opt.label)
+  );
+
+  const HeadingOptions = headingOptions.map((option) => ({
+    key: option.label,
+    element: <LucideIcon name={option.icon} size={20} />,
+    isActive: option.isActive ? option.isActive(editor) : false,
+    action: () => option.action(editor),
+  })) as DropdownOption[];
+
+  const ListOptions = listOptions.map((option) => ({
+    key: option.label,
+    element: <LucideIcon name={option.icon} size={20} />,
+    isActive: option.isActive ? option.isActive(editor) : false,
+    action: () => option.action(editor),
+  })) as DropdownOption[];
 
   return (
     <div className="w-full h-[44px] relative flex justify-center items-center bg-white dark:bg-[rgb(14, 14, 17)] border-b border-gray-200">
@@ -72,6 +68,7 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
         </div>
         <div className="flex gap-1 border-r border-gray-200 pr-2">
           <ToolbarDropDown options={HeadingOptions} ref={ref} />
+          <ToolbarDropDown options={ListOptions} ref={ref} />
         </div>
         <div className="flex gap-1 border-r border-gray-200 pr-2">
           <ToolbarButton onClick={() => actions?.toggleBold()}>
