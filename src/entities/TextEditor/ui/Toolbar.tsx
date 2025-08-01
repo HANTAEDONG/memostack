@@ -1,15 +1,15 @@
 import { Editor } from "@tiptap/react";
-import { getEditorActions } from "../lib/editor.actions";
 import ToolbarButton from "./ToolbarButton";
 import ToolbarIcon from "./ToolbarIcon";
 import ToolbarDropDown from "./ToolbarDropDown";
 import { useRef } from "react";
-import { useEditorState } from "../lib/useEditorState";
+import { useEditorState } from "../model/useEditorState";
+import { getEditorActions } from "../model/editor.actions";
 import {
-  headingOptions,
   getActiveOptions,
+  headingOptions,
   listOptions,
-} from "../lib/editor.options";
+} from "../model/editor.options";
 
 const Toolbar = ({ editor }: { editor: Editor }) => {
   const actions = getEditorActions(editor);
@@ -56,6 +56,12 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
           <ToolbarButton onClick={() => actions?.toggleCodeBlock()}>
             <ToolbarIcon name="Code" />
           </ToolbarButton>
+          <ToolbarButton onClick={() => actions?.toggleBlockquote()}>
+            <ToolbarIcon
+              name="Quote"
+              isActive={editorState.activeNodes.blockquote}
+            />
+          </ToolbarButton>
         </div>
         <div className="flex gap-1 border-r border-gray-200 pr-2">
           <ToolbarButton onClick={() => actions?.toggleBold()}>
@@ -78,6 +84,15 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
               name="Strikethrough"
               isActive={editorState.activeMarks.strike}
             />
+          </ToolbarButton>
+          <ToolbarButton onClick={() => actions?.toggleHighlight()}>
+            <ToolbarIcon
+              name="Highlighter"
+              isActive={editorState.activeMarks.highlight}
+            />
+          </ToolbarButton>
+          <ToolbarButton onClick={() => actions?.toggleLink()}>
+            <ToolbarIcon name="Link" isActive={editorState.activeMarks.link} />
           </ToolbarButton>
         </div>
       </div>
