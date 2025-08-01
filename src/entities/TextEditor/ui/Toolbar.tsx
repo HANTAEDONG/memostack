@@ -95,6 +95,23 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
             <ToolbarIcon name="Link" isActive={editorState.activeMarks.link} />
           </ToolbarButton>
         </div>
+        <div className="flex gap-1 border-r border-gray-200 pr-2">
+          <ToolbarButton onClick={() => actions?.setTextAlign("left")}>
+            <ToolbarIcon
+              name="AlignLeft"
+              isActive={editorState.activeNodes.textAlign === "left"}
+            />
+          </ToolbarButton>
+          <ToolbarButton onClick={() => actions?.setTextAlign("center")}>
+            <ToolbarIcon name="AlignCenter" />
+          </ToolbarButton>
+          <ToolbarButton onClick={() => actions?.setTextAlign("right")}>
+            <ToolbarIcon name="AlignRight" />
+          </ToolbarButton>
+          <ToolbarButton onClick={() => actions?.setTextAlign("justify")}>
+            <ToolbarIcon name="AlignJustify" />
+          </ToolbarButton>
+        </div>
       </div>
     </div>
   );
