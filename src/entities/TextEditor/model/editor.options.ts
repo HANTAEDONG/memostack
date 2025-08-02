@@ -1,8 +1,6 @@
 import { Editor } from "@tiptap/react";
 import { ToolbarOption } from "../model/editor.types";
-import { EditorActions } from "./editor.actions";
-
-const createActions = (editor: Editor) => EditorActions.create(editor);
+import { EditorActionInstance } from "./editor.actions";
 
 export const headingOptions: ToolbarOption[] = [
   {
@@ -10,8 +8,7 @@ export const headingOptions: ToolbarOption[] = [
     label: "제목 1",
     icon: "Heading1",
     type: "node",
-    headingLevel: 1,
-    action: (editor) => createActions(editor).toggleHeading(1),
+    action: (editor) => EditorActionInstance(editor)?.toggleHeading(1),
     isActive: (editor) => editor.isActive("heading", { level: 1 }),
   },
   {
@@ -19,8 +16,7 @@ export const headingOptions: ToolbarOption[] = [
     label: "제목 2",
     icon: "Heading2",
     type: "node",
-    headingLevel: 2,
-    action: (editor) => createActions(editor).toggleHeading(2),
+    action: (editor) => EditorActionInstance(editor)?.toggleHeading(2),
     isActive: (editor) => editor.isActive("heading", { level: 2 }),
   },
   {
@@ -28,8 +24,7 @@ export const headingOptions: ToolbarOption[] = [
     label: "제목 3",
     icon: "Heading3",
     type: "node",
-    headingLevel: 3,
-    action: (editor) => createActions(editor).toggleHeading(3),
+    action: (editor) => EditorActionInstance(editor)?.toggleHeading(3),
     isActive: (editor) => editor.isActive("heading", { level: 3 }),
   },
 ];
@@ -40,8 +35,7 @@ export const listOptions: ToolbarOption[] = [
     label: "순서 있는 목록",
     icon: "ListOrdered",
     type: "node",
-    nodeType: "orderedList",
-    action: (editor) => createActions(editor).toggleOrderedList(),
+    action: (editor) => EditorActionInstance(editor)?.toggleOrderedList(),
     isActive: (editor) => editor.isActive("orderedList"),
   },
   {
@@ -49,8 +43,7 @@ export const listOptions: ToolbarOption[] = [
     label: "순서 없는 목록",
     icon: "List",
     type: "node",
-    nodeType: "bulletList",
-    action: (editor) => createActions(editor).toggleBulletList(),
+    action: (editor) => EditorActionInstance(editor)?.toggleBulletList(),
     isActive: (editor) => editor.isActive("bulletList"),
   },
   {
@@ -58,8 +51,7 @@ export const listOptions: ToolbarOption[] = [
     label: "할 일 목록",
     icon: "SquareCheck",
     type: "node",
-    nodeType: "taskList",
-    action: (editor) => createActions(editor).toggleTaskList(),
+    action: (editor) => EditorActionInstance(editor)?.toggleTaskList(),
     isActive: (editor) => editor.isActive("taskList"),
   },
 ];
@@ -70,8 +62,7 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "굵게",
     icon: "Bold",
     type: "mark",
-    markType: "bold",
-    action: (editor) => createActions(editor).toggleBold(),
+    action: (editor) => EditorActionInstance(editor)?.toggleBold(),
     isActive: (editor) => editor.isActive("bold"),
   },
   {
@@ -79,8 +70,7 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "기울임",
     icon: "Italic",
     type: "mark",
-    markType: "italic",
-    action: (editor) => createActions(editor).toggleItalic(),
+    action: (editor) => EditorActionInstance(editor)?.toggleItalic(),
     isActive: (editor) => editor.isActive("italic"),
   },
   {
@@ -88,8 +78,7 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "밑줄",
     icon: "Underline",
     type: "mark",
-    markType: "underline",
-    action: (editor) => createActions(editor).toggleUnderline(),
+    action: (editor) => EditorActionInstance(editor)?.toggleUnderline(),
     isActive: (editor) => editor.isActive("underline"),
   },
   {
@@ -97,8 +86,7 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "취소선",
     icon: "Strikethrough",
     type: "mark",
-    markType: "strike",
-    action: (editor) => createActions(editor).toggleStrike(),
+    action: (editor) => EditorActionInstance(editor)?.toggleStrike(),
     isActive: (editor) => editor.isActive("strike"),
   },
   {
@@ -106,8 +94,7 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "인라인 코드",
     icon: "Code",
     type: "mark",
-    markType: "code",
-    action: (editor) => createActions(editor).toggleCode(),
+    action: (editor) => EditorActionInstance(editor)?.toggleCode(),
     isActive: (editor) => editor.isActive("code"),
   },
 
@@ -116,8 +103,7 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "코드 블록",
     icon: "Code",
     type: "node",
-    nodeType: "codeBlock",
-    action: (editor) => createActions(editor).toggleCodeBlock(),
+    action: (editor) => EditorActionInstance(editor)?.toggleCodeBlock(),
     isActive: (editor) => editor.isActive("codeBlock"),
   },
   {
@@ -125,8 +111,7 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "인용구",
     icon: "Quote",
     type: "node",
-    nodeType: "blockquote",
-    action: (editor) => createActions(editor).toggleBlockquote(),
+    action: (editor) => EditorActionInstance(editor)?.toggleBlockquote(),
     isActive: (editor) => editor.isActive("blockquote"),
   },
   {
@@ -134,18 +119,17 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "구분선",
     icon: "Minus",
     type: "action",
-    action: (editor) => createActions(editor).setHorizontalRule(),
+    action: (editor) => EditorActionInstance(editor)?.setHorizontalRule(),
   },
   {
     id: "link",
     label: "링크 추가",
     icon: "Link",
     type: "node",
-    nodeType: "link",
     action: (editor) => {
       const url = window.prompt("URL을 입력하세요:");
       if (url) {
-        createActions(editor).setLink(url);
+        EditorActionInstance(editor)?.setLink();
       }
     },
     isActive: (editor) => editor.isActive("link"),
@@ -155,8 +139,7 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "하이라이트",
     icon: "Highlighter",
     type: "mark",
-    markType: "highlight",
-    action: (editor) => createActions(editor).toggleHighlight(),
+    action: (editor) => EditorActionInstance(editor)?.toggleHighlight(),
     isActive: (editor) => editor.isActive("highlight"),
   },
   {
@@ -164,7 +147,7 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "링크 제거",
     icon: "Unlink",
     type: "action",
-    action: (editor) => createActions(editor).unsetLink(),
+    action: (editor) => EditorActionInstance(editor)?.unsetLink(),
     isActive: (editor) => editor.isActive("link"),
   },
   {
@@ -172,7 +155,7 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "실행 취소",
     icon: "Undo",
     type: "action",
-    action: (editor) => createActions(editor).undo(),
+    action: (editor) => EditorActionInstance(editor)?.undo(),
     isDisabled: (editor) => !editor.can().undo(),
   },
   {
@@ -180,7 +163,7 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "다시 실행",
     icon: "Redo",
     type: "action",
-    action: (editor) => createActions(editor).redo(),
+    action: (editor) => EditorActionInstance(editor)?.redo(),
     isDisabled: (editor) => !editor.can().redo(),
   },
   {
@@ -188,14 +171,35 @@ export const toolbarOptions: ToolbarOption[] = [
     label: "전체 선택",
     icon: "MousePointer",
     type: "action",
-    action: (editor) => createActions(editor).selectAll(),
+    action: (editor) => EditorActionInstance(editor)?.selectAll(),
   },
   {
     id: "clear-content",
     label: "내용 지우기",
     icon: "Trash",
     type: "action",
-    action: (editor) => createActions(editor).clearContent(),
+    action: (editor) => EditorActionInstance(editor)?.clearContent(),
+  },
+  {
+    id: "text-align-left",
+    label: "텍스트 정렬",
+    icon: "AlignLeft",
+    type: "action",
+    action: (editor) => EditorActionInstance(editor)?.setTextAlign("left"),
+  },
+  {
+    id: "text-align-center",
+    label: "텍스트 정렬",
+    icon: "AlignCenter",
+    type: "action",
+    action: (editor) => EditorActionInstance(editor)?.setTextAlign("center"),
+  },
+  {
+    id: "text-align-right",
+    label: "텍스트 정렬",
+    icon: "AlignRight",
+    type: "action",
+    action: (editor) => EditorActionInstance(editor)?.setTextAlign("right"),
   },
 ];
 
