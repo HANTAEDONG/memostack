@@ -48,12 +48,30 @@ export class EditorActions implements EditorAction {
   toggleHighlight() {
     return this.editor.chain().focus().toggleHighlight().run();
   }
-  toggleLink() {
-    return this.editor.chain().focus().toggleLink().run();
+  setLink() {
+    const previousUrl = this.editor.getAttributes("link").href;
+    const url = window.prompt("URL", previousUrl);
+    if (url === null) {
+      return;
+    }
+    if (url === "") {
+      this.editor.chain().focus().extendMarkRange("link").unsetLink().run();
+      return;
+    }
+    try {
+      this.editor
+        .chain()
+        .focus()
+        .extendMarkRange("link")
+        .setLink({ href: url })
+        .run();
+    } catch (e) {
+      return Error(e as string);
+    }
   }
-  setLink(href: string) {
-    return this.editor.chain().focus().setLink({ href }).run();
-  }
+  // toggleLink() {
+  //   return this.editor.chain().focus().toggleLink().run();
+  // }
   unsetLink() {
     return this.editor.chain().focus().unsetLink().run();
   }
@@ -83,14 +101,14 @@ export class EditorActions implements EditorAction {
   }
 }
 
-let globalEditorActions: EditorActions | null = null;
+let editorActionInstance: EditorActions | null = null;
 
-export const getEditorActions = (editor?: Editor): EditorActions | null => {
+export const EditorActionInstance = (editor?: Editor): EditorActions | null => {
   if (
     editor &&
-    (!globalEditorActions || globalEditorActions.getEditor() !== editor)
+    (!editorActionInstance || editorActionInstance.getEditor() !== editor)
   ) {
-    globalEditorActions = EditorActions.create(editor);
+    editorActionInstance = EditorActions.create(editor);
   }
-  return globalEditorActions;
+  return editorActionInstance;
 };
