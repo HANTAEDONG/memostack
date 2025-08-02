@@ -16,10 +16,8 @@ const ToolbarDropDown = ({ options, editor, ref }: ToolbarDropDownProps) => {
   const [selected, setSelected] = useState<React.ReactNode>(
     <Heading size={20} />
   );
-
   useOutsideClick(ref, () => setIsOpen(false));
 
-  // ToolbarOption을 DropdownOption으로 변환
   const dropdownOptions = options.map((option) => ({
     key: option.label,
     element: <LucideIcon name={option.icon} size={20} />,
