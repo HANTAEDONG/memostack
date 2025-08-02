@@ -47,9 +47,6 @@ export interface ToolbarOption {
   label: string;
   icon: keyof typeof icons;
   type: "mark" | "node" | "action";
-  markType?: MarkType;
-  nodeType?: NodeType;
-  headingLevel?: HeadingLevel;
   action: (editor: Editor) => void;
   isActive?: (editor: Editor) => boolean;
   isDisabled?: (editor: Editor) => boolean;
@@ -70,7 +67,6 @@ export interface EditorAction {
   setHorizontalRule: () => void;
   setTextAlign: (align: TextAlign) => void;
   toggleHighlight: () => void;
-  toggleLink: () => void;
   setLink: (href: string) => void;
   unsetLink: () => void;
   undo: () => void;
