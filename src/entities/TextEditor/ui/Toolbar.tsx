@@ -49,7 +49,7 @@ const Toolbar = ({ editor, isDarkMode, toggleDarkMode }: ToolbarProps) => {
                 name="Undo"
                 className={`${
                   editor?.can().undo()
-                    ? "text-gray-700 dark:text-[oklch(90%_0_0)]"
+                    ? "text-gray-700 dark:text-[oklch(60%_0_0)]"
                     : "text-gray-300 dark:text-gray-500"
                 }`}
               />
@@ -65,7 +65,7 @@ const Toolbar = ({ editor, isDarkMode, toggleDarkMode }: ToolbarProps) => {
                 name="Redo"
                 className={`${
                   editor?.can().redo()
-                    ? "text-gray-700 dark:text-[oklch(90%_0_0)]"
+                    ? "text-gray-700 dark:text-[oklch(60%_0_0)]"
                     : "text-gray-300 dark:text-gray-500"
                 }`}
               />
