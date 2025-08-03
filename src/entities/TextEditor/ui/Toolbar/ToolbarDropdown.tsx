@@ -1,21 +1,20 @@
-import useOutsideClick from "@/shared/hooks/useOutsideClick";
-import { ChevronDown, Heading } from "lucide-react";
-import { useState } from "react";
-import { ToolbarOption } from "../model/editor.types";
 import { Editor } from "@tiptap/react";
+import { ToolbarOption } from "../../model/editor.types";
+import { useState } from "react";
 import LucideIcon from "@/shared/ui/Icon/LucideIcon";
+import useOutsideClick from "@/shared/hooks/useOutsideClick";
+import { ChevronDown } from "lucide-react";
 
-interface ToolbarDropDownProps {
+interface ToolbarDropdownProps {
   options: ToolbarOption[];
   editor: Editor;
   ref?: React.RefObject<HTMLDivElement | null>;
 }
 
-const ToolbarDropDown = ({ options, editor, ref }: ToolbarDropDownProps) => {
+const ToolbarDropdown = ({ options, editor, ref }: ToolbarDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  // const defaultSelected = options.find
   const [selected, setSelected] = useState<React.ReactNode>(
-    <Heading size={20} />
+    <LucideIcon name={options[0]?.icon || "Heading"} size={20} />
   );
   useOutsideClick(ref, () => setIsOpen(false));
 
@@ -55,4 +54,4 @@ const ToolbarDropDown = ({ options, editor, ref }: ToolbarDropDownProps) => {
   );
 };
 
-export default ToolbarDropDown;
+export default ToolbarDropdown;

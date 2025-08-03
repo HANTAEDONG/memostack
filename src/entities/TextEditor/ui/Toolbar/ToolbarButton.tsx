@@ -1,11 +1,11 @@
 import { cn } from "@/shared/lib/utils";
 
-type ToolbarButtonProps = {
+interface ToolbarButtonProps {
   children: React.ReactNode;
   className?: string;
   onClick: () => void;
   disabled?: boolean;
-};
+}
 
 const ToolbarButton = ({
   children,

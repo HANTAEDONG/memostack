@@ -1,9 +1,9 @@
 "use client";
 
-import Toolbar from "./Toolbar";
 import { EditorContent, useEditor } from "@tiptap/react";
 import EditorOptions from "../model/EditorOptions";
 import { useEffect, useState } from "react";
+import ToolbarComponent from "./ToolbarComponent";
 
 const Tiptap = () => {
   const editor = useEditor(EditorOptions);
@@ -24,7 +24,7 @@ const Tiptap = () => {
       id="tiptap-editor"
     >
       {editor && (
-        <Toolbar
+        <ToolbarComponent
           editor={editor}
           isDarkMode={isDarkMode}
           toggleDarkMode={toggleDarkMode}

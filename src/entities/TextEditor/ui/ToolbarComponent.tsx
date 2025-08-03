@@ -1,16 +1,13 @@
 import { Editor } from "@tiptap/react";
-import ToolbarButton from "./ToolbarButton";
-import ToolbarIcon from "./ToolbarIcon";
-import ToolbarDropDown from "./ToolbarDropDown";
 import { useRef, useState } from "react";
 import { useEditorState } from "../model/useEditorState";
-
 import {
   headingOptions,
   listOptions,
   toolbarOptions,
 } from "../model/editor.options";
 import Card from "@/shared/ui/Card/Card";
+import Toolbar from "@/entities/TextEditor/ui/Toolbar/index";
 
 interface ToolbarProps {
   editor: Editor;
@@ -18,12 +15,17 @@ interface ToolbarProps {
   toggleDarkMode: () => void;
 }
 
-const Toolbar = ({ editor, isDarkMode, toggleDarkMode }: ToolbarProps) => {
+const ToolbarComponent = ({
+  editor,
+  isDarkMode,
+  toggleDarkMode,
+}: ToolbarProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const { editorState } = useEditorState(editor);
   const [open, setOpen] = useState(false);
   const [url, setUrl] = useState("");
   const [mention, setMention] = useState("");
+
   return (
     <div className="w-full h-[44px] relative border-b border-gray-200 rounded-t-lg">
       <div
@@ -33,19 +35,16 @@ const Toolbar = ({ editor, isDarkMode, toggleDarkMode }: ToolbarProps) => {
           msOverflowStyle: "none",
         }}
       >
-        <div
-          className="flex gap-2 dark:text-white min-w-max px-4 whitespace-nowrap h-full items-center"
-          style={{ color: "rgb(14, 14, 17)" }}
-        >
+        <div className="flex gap-2 dark:text-white min-w-max px-4 whitespace-nowrap h-full items-center">
           <div className="flex gap-1 border-r border-gray-200 pr-2">
-            <ToolbarButton
+            <Toolbar.Button
               className={`w-8 h-8 flex items-center justify-center`}
               onClick={() => {
                 toolbarOptions.undo.action(editor);
               }}
               disabled={!editor?.can().undo()}
             >
-              <ToolbarIcon
+              <Toolbar.Icon
                 name="Undo"
                 className={`${
                   editor?.can().undo()
@@ -53,15 +52,15 @@ const Toolbar = ({ editor, isDarkMode, toggleDarkMode }: ToolbarProps) => {
                     : "text-gray-300 dark:text-gray-500"
                 }`}
               />
-            </ToolbarButton>
-            <ToolbarButton
+            </Toolbar.Button>
+            <Toolbar.Button
               className={`w-8 h-8 flex items-center justify-center`}
               onClick={() => {
                 toolbarOptions.redo.action(editor);
               }}
               disabled={!editor?.can().redo()}
             >
-              <ToolbarIcon
+              <Toolbar.Icon
                 name="Redo"
                 className={`${
                   editor?.can().redo()
@@ -69,91 +68,86 @@ const Toolbar = ({ editor, isDarkMode, toggleDarkMode }: ToolbarProps) => {
                     : "text-gray-300 dark:text-gray-500"
                 }`}
               />
-            </ToolbarButton>
+            </Toolbar.Button>
           </div>
           <div className="flex gap-1 border-r border-gray-200 pr-2">
-            <ToolbarDropDown
+            <Toolbar.Dropdown
               options={headingOptions}
               editor={editor}
               ref={ref}
             />
-            <ToolbarDropDown options={listOptions} editor={editor} ref={ref} />
-            <ToolbarButton
+            <Toolbar.Dropdown options={listOptions} editor={editor} ref={ref} />
+            <Toolbar.Button
               onClick={() => {
                 toolbarOptions.codeBlock.action(editor);
               }}
             >
-              <ToolbarIcon name="Code" />
-            </ToolbarButton>
-            <ToolbarButton
+              <Toolbar.Icon name="Code" />
+            </Toolbar.Button>
+            <Toolbar.Button
               onClick={() => {
                 toolbarOptions.blockquote.action(editor);
               }}
             >
-              <ToolbarIcon
+              <Toolbar.Icon
                 name="Quote"
                 isActive={editorState.activeNodes.blockquote}
               />
-            </ToolbarButton>
+            </Toolbar.Button>
           </div>
           <div className="flex gap-1 border-r border-gray-200 pr-2">
-            <ToolbarButton
+            <Toolbar.Button
               onClick={() => {
                 toolbarOptions.bold.action(editor);
               }}
             >
-              <ToolbarIcon
+              <Toolbar.Icon
                 name="Bold"
                 isActive={editorState.activeMarks.bold}
               />
-            </ToolbarButton>
-            <ToolbarButton
+            </Toolbar.Button>
+            <Toolbar.Button
               onClick={() => {
                 toolbarOptions.italic.action(editor);
               }}
             >
-              <ToolbarIcon
+              <Toolbar.Icon
                 name="Italic"
                 isActive={editorState.activeMarks.italic}
               />
-            </ToolbarButton>
-            <ToolbarButton
+            </Toolbar.Button>
+            <Toolbar.Button
               onClick={() => {
                 toolbarOptions.underline.action(editor);
               }}
             >
-              <ToolbarIcon
+              <Toolbar.Icon
                 name="Underline"
                 isActive={editorState.activeMarks.underline}
               />
-            </ToolbarButton>
-            <ToolbarButton
+            </Toolbar.Button>
+            <Toolbar.Button
               onClick={() => {
                 toolbarOptions.strike.action(editor);
               }}
             >
-              <ToolbarIcon
+              <Toolbar.Icon
                 name="Strikethrough"
                 isActive={editorState.activeMarks.strike}
               />
-            </ToolbarButton>
-            <ToolbarButton
+            </Toolbar.Button>
+            <Toolbar.Button
               onClick={() => {
                 toolbarOptions.highlight.action(editor);
               }}
             >
-              <ToolbarIcon
+              <Toolbar.Icon
                 name="Highlighter"
                 isActive={editorState.activeMarks.highlight}
               />
-            </ToolbarButton>
-            {/* <ToolbarButton
-            onClick={useCallback(() => actions?.setLink(), [actions])}
-          >
-            <ToolbarIcon name="Link" isActive={editorState.activeMarks.link} />
-          </ToolbarButton> */}
-            <ToolbarButton onClick={() => setOpen(true)}>
-              <ToolbarIcon
+            </Toolbar.Button>
+            <Toolbar.Button onClick={() => setOpen(true)}>
+              <Toolbar.Icon
                 name="Link"
                 isActive={editorState.activeMarks.link}
               />
@@ -197,45 +191,45 @@ const Toolbar = ({ editor, isDarkMode, toggleDarkMode }: ToolbarProps) => {
                   </div>
                 </Card>
               )}
-            </ToolbarButton>
+            </Toolbar.Button>
           </div>
           <div className="flex gap-1 border-r border-gray-200 pr-2">
-            <ToolbarButton
+            <Toolbar.Button
               onClick={() => {
                 toolbarOptions.textAlignLeft.action(editor);
               }}
             >
-              <ToolbarIcon
+              <Toolbar.Icon
                 name="AlignLeft"
                 isActive={editorState.activeNodes.textAlign === "left"}
               />
-            </ToolbarButton>
-            <ToolbarButton
+            </Toolbar.Button>
+            <Toolbar.Button
               onClick={() => {
                 toolbarOptions.textAlignCenter.action(editor);
               }}
             >
-              <ToolbarIcon name="AlignCenter" />
-            </ToolbarButton>
-            <ToolbarButton
+              <Toolbar.Icon name="AlignCenter" />
+            </Toolbar.Button>
+            <Toolbar.Button
               onClick={() => {
                 toolbarOptions.textAlignRight.action(editor);
               }}
             >
-              <ToolbarIcon name="AlignRight" />
-            </ToolbarButton>
-            <ToolbarButton
+              <Toolbar.Icon name="AlignRight" />
+            </Toolbar.Button>
+            <Toolbar.Button
               onClick={() => {
                 toolbarOptions.textAlignJustify.action(editor);
               }}
             >
-              <ToolbarIcon name="AlignJustify" />
-            </ToolbarButton>
+              <Toolbar.Icon name="AlignJustify" />
+            </Toolbar.Button>
           </div>
           <div>
-            <ToolbarButton onClick={toggleDarkMode}>
-              <ToolbarIcon name={isDarkMode ? "Sun" : "Moon"} />
-            </ToolbarButton>
+            <Toolbar.Button onClick={toggleDarkMode}>
+              <Toolbar.Icon name={isDarkMode ? "Sun" : "Moon"} />
+            </Toolbar.Button>
           </div>
         </div>
       </div>
@@ -243,4 +237,4 @@ const Toolbar = ({ editor, isDarkMode, toggleDarkMode }: ToolbarProps) => {
   );
 };
 
-export default Toolbar;
+export default ToolbarComponent;
