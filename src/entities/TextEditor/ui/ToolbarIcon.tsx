@@ -18,7 +18,8 @@ const ToolbarIcon = ({
       name={name}
       size={size}
       className={cn(
-        isActive ? "text-blue-500" : "text-gray-700 dark:text-white"
+        isActive ? "text-blue-500" : "text-gray-700 dark:text-[oklch(60%_0_0)]",
+        props.className
       )}
       {...props}
     />
