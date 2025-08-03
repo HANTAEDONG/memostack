@@ -13,6 +13,7 @@ interface ToolbarDropDownProps {
 
 const ToolbarDropDown = ({ options, editor, ref }: ToolbarDropDownProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  // const defaultSelected = options.find
   const [selected, setSelected] = useState<React.ReactNode>(
     <Heading size={20} />
   );
