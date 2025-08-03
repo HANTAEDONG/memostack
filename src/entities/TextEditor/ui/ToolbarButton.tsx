@@ -16,7 +16,7 @@ const ToolbarButton = ({
   return (
     <button
       className={cn(
-        "w-8 h-8 flex items-center justify-center dark:bg-[rgb(14, 14, 17)] dark:text-white dark:hover:bg-[rgb(24, 24, 27)] bg-white hover:bg-gray-200 rounded-md",
+        "w-8 h-8 flex items-center justify-center bg-white dark:bg-[oklch(14.5%_0_0)] hover:bg-gray-200 dark:hover:bg-[oklch(24%_0_0)] rounded-md relative cursor-pointer text-gray-700 dark:text-[oklch(90%_0_0)] hover:text-gray-900 dark:hover:text-[oklch(90%_0_0)]",
         className
       )}
       onClick={onClick}
