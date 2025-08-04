@@ -48,12 +48,7 @@ export class EditorActions implements EditorAction {
   toggleHighlight() {
     return this.editor.chain().focus().toggleHighlight().run();
   }
-  setLink() {
-    const previousUrl = this.editor.getAttributes("link").href;
-    const url = window.prompt("URL", previousUrl);
-    if (url === null) {
-      return;
-    }
+  setLink(url: string) {
     if (url === "") {
       this.editor.chain().focus().extendMarkRange("link").unsetLink().run();
       return;
@@ -69,15 +64,11 @@ export class EditorActions implements EditorAction {
       return Error(e as string);
     }
   }
-  // toggleLink() {
-  //   return this.editor.chain().focus().toggleLink().run();
-  // }
+
   unsetLink() {
     return this.editor.chain().focus().unsetLink().run();
   }
-  // setImage(src: string, alt?: string) {
-  //   return this.editor.chain().focus().setImage({ src, alt }).run();
-  // }
+
   setTextAlign(align: TextAlign) {
     return this.editor.chain().focus().setTextAlign(align).run();
   }
