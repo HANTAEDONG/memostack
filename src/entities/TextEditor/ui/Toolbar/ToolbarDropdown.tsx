@@ -1,3 +1,5 @@
+"use client";
+
 import { Editor } from "@tiptap/react";
 import { ToolbarOption } from "../../model/editor.types";
 import { useState } from "react";
