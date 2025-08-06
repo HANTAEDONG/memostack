@@ -129,7 +129,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     action: (editor) => {
       const url = window.prompt("URL을 입력하세요:");
       if (url) {
-        EditorActionInstance(editor)?.setLink();
+        EditorActionInstance(editor)?.setLink(url);
       }
     },
     isActive: (editor) => editor.isActive("link"),
