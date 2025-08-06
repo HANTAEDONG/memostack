@@ -67,10 +67,14 @@ const EditorOptions = {
   ],
   immediatelyRender: false,
   autofocus: false,
+  enableContentCheck: true,
+  onContentError({ error }: { error: Error }) {
+    console.error(error);
+  },
   editorProps: {
     attributes: {
       class:
-        "prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none",
+        "prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none focus:ring-0",
     },
   },
   onUpdate: ({ editor }: { editor: Editor }) => {

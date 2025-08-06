@@ -1,27 +1,43 @@
 "use client";
 
 import { EditorContent, useEditor } from "@tiptap/react";
-import EditorOptions from "../model/EditorOptions";
-import { useEffect, useState } from "react";
+import EditorOptions from "../lib/EditorOptions";
 import ToolbarComponent from "./ToolbarComponent";
+import { cn } from "@/shared/lib/cn";
+import useToggleDarkmode from "@/shared/hooks/useToggleDarkmode";
+import { useEffect } from "react";
 
-const Tiptap = () => {
+interface TiptapProps {
+  initialContent?: string;
+  setContent: (content: string) => void;
+}
+
+const Tiptap = ({ initialContent, setContent }: TiptapProps) => {
   const editor = useEditor(EditorOptions);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const { isDarkMode, toggleDarkMode } = useToggleDarkmode();
   useEffect(() => {
-    if (isDarkMode) {
-      document.getElementById("tiptap-editor")?.classList.add("dark");
-    } else {
-      document.getElementById("tiptap-editor")?.classList.remove("dark");
+    if (editor && initialContent) {
+      editor.commands.setContent(initialContent);
     }
-  }, [isDarkMode]);
+  }, [editor, initialContent]);
+  useEffect(() => {
+    if (editor) {
+      editor.on("update", () => {
+        setContent(editor.getHTML());
+      });
+    }
+    return () => {
+      editor?.off("update", () => {
+        setContent(editor.getHTML());
+      });
+    };
+  }, [editor, setContent]);
   return (
     <div
-      className="relative border border-gray-200 rounded-lg flex flex-col bg-white dark:bg-[oklch(14.5%_0_0)] w-[723px] max-md:w-full"
-      id="tiptap-editor"
+      className={cn(
+        isDarkMode && "dark",
+        "relative border border-gray-200 rounded-lg flex flex-col bg-white dark:bg-[oklch(14.5%_0_0)] w-[723px] max-md:w-full"
+      )}
     >
       {editor && (
         <ToolbarComponent

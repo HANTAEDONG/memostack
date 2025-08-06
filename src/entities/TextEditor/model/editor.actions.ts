@@ -1,5 +1,5 @@
 import { Editor } from "@tiptap/react";
-import { EditorAction, TextAlign } from "../model/editor.types";
+import { EditorAction, TextAlign } from "../lib/editor.types";
 
 export class EditorActions implements EditorAction {
   protected editor: Editor;

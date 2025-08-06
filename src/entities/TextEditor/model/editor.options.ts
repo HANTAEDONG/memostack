@@ -1,5 +1,5 @@
 import { Editor } from "@tiptap/react";
-import { ToolbarOption } from "../model/editor.types";
+import { ToolbarOption } from "../lib/editor.types";
 import { EditorActionInstance } from "./editor.actions";
 
 export const headingOptions: ToolbarOption[] = [
