@@ -1,7 +1,7 @@
 "use client";
 
 import { Editor } from "@tiptap/react";
-import { ToolbarOption } from "../../model/editor.types";
+import { ToolbarOption } from "../../lib/editor.types";
 import { useState } from "react";
 import LucideIcon from "@/shared/ui/Icon/LucideIcon";
 import useOutsideClick from "@/shared/hooks/useOutsideClick";

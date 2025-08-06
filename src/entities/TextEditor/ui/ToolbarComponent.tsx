@@ -6,7 +6,7 @@ import {
   headingOptions,
   listOptions,
   toolbarOptions,
-} from "../model/editor.options";
+} from "../lib/editor.options";
 import Toolbar from "@/entities/TextEditor/ui/Toolbar/index";
 import { EditorState } from "../lib/editor.types";
 

@@ -1,6 +1,5 @@
-import { Editor } from "@tiptap/react";
 import { ToolbarOption } from "../lib/editor.types";
-import { EditorActionInstance } from "./editor.actions";
+import { EditorActionInstance } from "../model/editor.actions";
 
 export const headingOptions: ToolbarOption[] = [
   {
@@ -97,7 +96,6 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     action: (editor) => EditorActionInstance(editor)?.toggleCode(),
     isActive: (editor) => editor.isActive("code"),
   },
-
   codeBlock: {
     id: "code-block",
     label: "코드 블록",
@@ -201,10 +199,4 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     type: "action",
     action: (editor) => EditorActionInstance(editor)?.setTextAlign("right"),
   },
-};
-
-export const getActiveOptions = (editor: Editor): ToolbarOption[] => {
-  return Object.values(toolbarOptions).filter(
-    (option) => option.isActive && option.isActive(editor)
-  );
 };
