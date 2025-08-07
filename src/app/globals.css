@@ -48,6 +48,16 @@
   .prose a {
     @apply text-blue-500 hover:text-blue-600 cursor-pointer underline;
   }
+
+  .prose h1[data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    @apply text-gray-400 dark:text-gray-500;
+    @apply pointer-events-none;
+  }
+
+  .prose h1[data-placeholder]:focus:empty::before {
+    @apply text-gray-300 dark:text-gray-600;
+  }
 }
 
 @theme inline {
