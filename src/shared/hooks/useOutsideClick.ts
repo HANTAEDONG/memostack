@@ -6,7 +6,6 @@ const useOutsideClick = (
 ) => {
   useEffect(() => {
     if (!ref) return;
-
     const listener = (event: MouseEvent) => {
       if (!ref.current || ref.current.contains(event.target as Node)) return;
       handler();

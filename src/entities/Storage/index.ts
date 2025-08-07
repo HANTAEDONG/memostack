@@ -1,2 +1,2 @@
 export { StorageService } from "./model/storage.service";
-export type { SavedContent } from "./lib/storage.types";
+export type { Identifiable, StorageServiceType } from "./lib/storage.types";

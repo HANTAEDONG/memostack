@@ -1,42 +1,42 @@
 "use client";
 
-import { StorageService } from "@/entities/Storage";
+import { Content } from "@/entities/Content";
+import { EditPostService } from "./EditPost.service";
 import { useState, useRef } from "react";
 
 export const useEditPost = (initialContent: string) => {
   const [content, setContent] = useState(initialContent);
-  const storageServiceRef = useRef<StorageService | null>(null);
-
-  const StorageServiceInstance = () => {
-    if (typeof window === "undefined") {
-      return null;
+  const [currentContentId, setCurrentContentId] = useState<string | null>(null);
+  const editPostServiceRef = useRef<EditPostService | null>(null);
+  const EditPostInstance = () => {
+    if (!editPostServiceRef.current) {
+      editPostServiceRef.current = new EditPostService();
     }
-    if (!storageServiceRef.current) {
-      storageServiceRef.current = new StorageService();
-    }
-    return storageServiceRef.current;
+    return editPostServiceRef.current;
   };
-
-  const createDraft = () => {
-    const storageService = StorageServiceInstance();
-    if (storageService) {
-      const draft = storageService.createDraft();
-      return draft;
-    }
-    return null;
+  const createContent = (): Content | null => {
+    const editPostService = EditPostInstance();
+    const newContent = editPostService.createContent(content);
+    setCurrentContentId(newContent.id);
+    return newContent;
   };
-
-  const handleAutoSave = (content: string, id?: string) => {
-    const storageService = StorageServiceInstance();
-    if (storageService) {
-      storageService.saveDraft(content, id);
+  const saveContent = (contentToSave: string, id?: string): Content | null => {
+    const editPostService = EditPostInstance();
+    const contentId = id || currentContentId;
+    const savedContent = editPostService.saveContent(
+      contentToSave,
+      contentId || undefined
+    );
+    if (!contentId) {
+      setCurrentContentId(savedContent.id);
     }
+    return savedContent;
   };
-
   return {
     content,
     setContent,
-    handleAutoSave,
-    createDraft,
+    currentContentId,
+    createContent,
+    saveContent,
   };
 };

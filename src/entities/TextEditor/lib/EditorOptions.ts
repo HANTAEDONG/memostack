@@ -6,7 +6,11 @@ import { Editor } from "@tiptap/react";
 
 const EditorOptions = {
   extensions: [
-    StarterKit,
+    StarterKit.configure({
+      heading: {
+        levels: [1, 2, 3],
+      },
+    }),
     Highlight,
     TextAlign.configure({
       types: ["heading", "paragraph"],
@@ -65,6 +69,7 @@ const EditorOptions = {
       },
     }),
   ],
+  content: '<h1 data-placeholder="제목을 입력하세요..."></h1><p></p>',
   immediatelyRender: false,
   autofocus: false,
   enableContentCheck: true,

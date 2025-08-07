@@ -1,9 +1,9 @@
-import CreatePostForm from "@/features/EditPost/ui/CreatePostForm";
+import CreatePostFormPage from "@/pages/createFormPage";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <CreatePostForm />
+    <div className="w-full">
+      <CreatePostFormPage />
     </div>
   );
 }

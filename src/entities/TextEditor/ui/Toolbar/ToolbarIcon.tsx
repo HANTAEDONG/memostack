@@ -1,6 +1,6 @@
 import LucideIcon, { LucideIconProps } from "@/shared/ui/Icon/LucideIcon";
-import { ToolbarOption } from "../../model/editor.types";
 import { cn } from "@/shared/lib/cn";
+import { ToolbarOption } from "../../lib/editor.types";
 
 export interface ToolbarIconProps extends LucideIconProps {
   isActive?: boolean;

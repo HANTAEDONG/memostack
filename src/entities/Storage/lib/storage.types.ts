@@ -1,19 +1,12 @@
-export interface SavedContent {
-  id: string;
-  title: string;
-  content: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 export interface Identifiable {
   id: string;
 }
 
 export interface StorageServiceType<T extends Identifiable> {
-  saveContent(data: T): void;
-  createContent(data: T): T;
-  getAllContents(): T[];
-  deleteContent(id: string): void;
-  clearAll(): void;
+  save(data: T): void;
+  create(data: T): T;
+  getAll(): T[];
+  delete(id: string): void;
+  clear(): void;
+  generateId(): string;
 }

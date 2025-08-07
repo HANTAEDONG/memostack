@@ -1,5 +1,5 @@
 import { ToolbarOption } from "../lib/editor.types";
-import { EditorActionInstance } from "../model/editor.actions";
+import { EditorActionInstance } from "@/entities/TextEditor/model/editor.service";
 
 export const headingOptions: ToolbarOption[] = [
   {

@@ -3,7 +3,7 @@
 import Card from "@/shared/ui/Card/Card";
 import { useState } from "react";
 import { Editor } from "@tiptap/core";
-import { EditorActionInstance } from "../../model/editor.actions";
+import { EditorActionInstance } from "@/entities/TextEditor/model/editor.service";
 
 interface ToolbarLinkCardProps {
   editor: Editor;

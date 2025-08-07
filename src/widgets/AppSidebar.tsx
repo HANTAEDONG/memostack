@@ -34,7 +34,7 @@ export function AppSidebar() {
             />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-lg font-semibold">MemoStack</h1>
+            <h1 className="text-xl font-semibold">MemoStack</h1>
           </div>
         </div>
       </SidebarHeader>

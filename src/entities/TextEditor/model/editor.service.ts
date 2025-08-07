@@ -64,11 +64,9 @@ export class EditorActions implements EditorAction {
       return Error(e as string);
     }
   }
-
   unsetLink() {
     return this.editor.chain().focus().unsetLink().run();
   }
-
   setTextAlign(align: TextAlign) {
     return this.editor.chain().focus().setTextAlign(align).run();
   }

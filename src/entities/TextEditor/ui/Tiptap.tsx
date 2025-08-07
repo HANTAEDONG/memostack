@@ -15,11 +15,13 @@ interface TiptapProps {
 const Tiptap = ({ initialContent, setContent }: TiptapProps) => {
   const editor = useEditor(EditorOptions);
   const { isDarkMode, toggleDarkMode } = useToggleDarkmode();
+
   useEffect(() => {
     if (editor && initialContent) {
       editor.commands.setContent(initialContent);
     }
   }, [editor, initialContent]);
+
   useEffect(() => {
     if (editor) {
       editor.on("update", () => {
@@ -32,11 +34,23 @@ const Tiptap = ({ initialContent, setContent }: TiptapProps) => {
       });
     };
   }, [editor, setContent]);
+
+  // 에디터 초기화 시 첫 번째 h1 요소에 포커스
+  useEffect(() => {
+    if (editor) {
+      // 에디터가 준비되면 첫 번째 h1 요소로 커서 이동
+      const firstHeading = editor.view.dom.querySelector("h1");
+      if (firstHeading && !editor.state.doc.textContent.trim()) {
+        editor.commands.focus("start");
+      }
+    }
+  }, [editor]);
+
   return (
     <div
       className={cn(
         isDarkMode && "dark",
-        "relative border border-gray-200 rounded-lg flex flex-col bg-white dark:bg-[oklch(14.5%_0_0)] w-[723px] max-md:w-full"
+        "relative border border-gray-200 rounded-lg flex flex-col min-h-[calc(100vh-100px)]"
       )}
     >
       {editor && (
@@ -46,7 +60,7 @@ const Tiptap = ({ initialContent, setContent }: TiptapProps) => {
           toggleDarkMode={toggleDarkMode}
         />
       )}
-      <EditorContent editor={editor} />
+      <EditorContent editor={editor} className="w-full h-full flex-1" />
     </div>
   );
 };
