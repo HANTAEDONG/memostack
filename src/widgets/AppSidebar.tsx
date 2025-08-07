@@ -25,9 +25,13 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-2">
-          <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <LucideIcon name="BookText" size={16} />
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground group-data-[collapsible=icon]:flex-shrink-0">
+            <LucideIcon
+              name="BookText"
+              size={20}
+              className="group-data-[collapsible=icon]:!w-5 group-data-[collapsible=icon]:!h-5"
+            />
           </div>
           <div className="flex flex-col">
             <h1 className="text-lg font-semibold">MemoStack</h1>
@@ -35,6 +39,22 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
       <SidebarContent>
+        <SidebarGroup>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === "/create"}
+                className="bg-foreground text-white rounded-lg hover:bg-foreground/60 hover:text-white"
+              >
+                <Link href="/create">
+                  <Plus />
+                  <span>새 메모</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel>검색</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -50,14 +70,6 @@ export function AppSidebar() {
                   <Link href="/">
                     <FileText />
                     <span>모든 메모</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname === "/create"}>
-                  <Link href="/create">
-                    <Plus />
-                    <span>새 메모</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
