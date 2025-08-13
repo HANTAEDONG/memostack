@@ -23,10 +23,14 @@ model Post {
   title     String
   content   String
   authorId  String
+  status    String   @default("draft")
+  category  String   @default("general")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@index([authorId])
   @@index([createdAt])
+  @@index([status])
+  @@index([category])
 }
