@@ -25,12 +25,8 @@ export interface PostWithAuthor extends Post {
 }
 
 export class PostService {
-  /**
-   * 새 게시물 생성
-   */
   static async create(postData: CreatePostData): Promise<Result<Post>> {
     try {
-      // 입력 유효성 검사
       if (!postData.title.trim()) {
         return createResult.error(
           new AppError(
@@ -41,7 +37,6 @@ export class PostService {
           )
         );
       }
-
       if (!postData.content.trim()) {
         return createResult.error(
           new AppError(
@@ -52,7 +47,6 @@ export class PostService {
           )
         );
       }
-
       const post = await prisma.post.create({
         data: {
           title: postData.title.trim(),
@@ -60,13 +54,11 @@ export class PostService {
           authorId: postData.authorId,
         },
       });
-
       logger.info("새 게시물 생성 완료", {
         postId: post.id,
         authorId: post.authorId,
         title: post.title.substring(0, 50) + "...",
       });
-
       return createResult.success(post);
     } catch (error) {
       const appError = ErrorHandler.handlePrismaError(error, "게시물 생성");
@@ -74,10 +66,6 @@ export class PostService {
       return createResult.error(appError);
     }
   }
-
-  /**
-   * ID로 게시물 조회 (작성자 정보 포함)
-   */
   static async findById(id: string): Promise<Result<PostWithAuthor | null>> {
     try {
       const post = await prisma.post.findUnique({
@@ -102,9 +90,6 @@ export class PostService {
     }
   }
 
-  /**
-   * 사용자별 게시물 목록 조회
-   */
   static async findByAuthor(
     authorId: string,
     limit: number = 20,
@@ -138,9 +123,6 @@ export class PostService {
     }
   }
 
-  /**
-   * 모든 게시물 조회 (페이지네이션)
-   */
   static async findAll(
     limit: number = 20,
     offset: number = 0
@@ -154,9 +136,7 @@ export class PostService {
         take: limit,
         skip: offset,
       });
-
       logger.debug("전체 게시물 조회 완료", { count: posts.length });
-
       return createResult.success(posts);
     } catch (error) {
       const appError = ErrorHandler.handlePrismaError(
@@ -168,9 +148,6 @@ export class PostService {
     }
   }
 
-  /**
-   * 게시물 업데이트
-   */
   static async update(
     id: string,
     updateData: UpdatePostData,
@@ -230,9 +207,6 @@ export class PostService {
     }
   }
 
-  /**
-   * 게시물 삭제
-   */
   static async delete(id: string, authorId: string): Promise<Result<boolean>> {
     try {
       // 먼저 게시물이 존재하고 작성자가 맞는지 확인
@@ -275,9 +249,6 @@ export class PostService {
     }
   }
 
-  /**
-   * 게시물 검색 (제목 + 내용)
-   */
   static async search(
     query: string,
     limit: number = 20,
@@ -323,9 +294,6 @@ export class PostService {
     }
   }
 
-  /**
-   * 게시물 개수 조회
-   */
   static async count(authorId?: string): Promise<Result<number>> {
     try {
       const count = await prisma.post.count({
