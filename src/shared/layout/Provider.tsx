@@ -3,10 +3,10 @@
 import { SessionProvider } from "next-auth/react";
 import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "@/shared/lib/apollo-client";
-import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/shared/ui/shadcn/sidebar";
 import { AppSidebar } from "@/widgets/AppSidebar";
-import { ErrorProvider } from "./ErrorProvider";
-import { ErrorBoundary } from "../ui/ErrorBoundary";
+import { ErrorBoundary } from "@/shared/ui/ErrorBoundary";
+import { SiteHeader } from "@/shared/ui/shadcn/site-header";
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -17,21 +17,19 @@ export default function Providers({ children }: ProvidersProps) {
     <ErrorBoundary>
       <SessionProvider>
         <ApolloProvider client={apolloClient}>
-          <ErrorProvider>
-            <SidebarProvider defaultOpen={true}>
-              <AppSidebar />
-              <main
-                className={
-                  "bg-background dark:bg-foreground w-[723px] mx-auto relative"
-                }
-              >
-                <div className="absolute top-2 left-2 z-10">
-                  <SidebarTrigger className="cursor-pointer" />
+          <SidebarProvider defaultOpen={true}>
+            <AppSidebar />
+            <SidebarInset>
+              <SiteHeader />
+              <div className="flex flex-1 flex-col">
+                <div className="@container/main flex flex-1 flex-col gap-2">
+                  <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+                    {children}
+                  </div>
                 </div>
-                {children}
-              </main>
-            </SidebarProvider>
-          </ErrorProvider>
+              </div>
+            </SidebarInset>
+          </SidebarProvider>
         </ApolloProvider>
       </SessionProvider>
     </ErrorBoundary>
