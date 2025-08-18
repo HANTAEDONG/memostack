@@ -26,13 +26,11 @@ export class PostService {
           status: postData.status || "draft",
         },
       });
-
-      logger.info("새 게시물 생성 완료", {
+      logger.debug("새 게시물 생성 완료", {
         postId: post.id,
         authorId: post.authorId,
         title: post.title.substring(0, 50) + "...",
       });
-
       return post;
     }, "게시물 생성");
   }
@@ -47,14 +45,12 @@ export class PostService {
           author: true,
         },
       });
-
       if (post) {
         logger.debug("게시물 조회 성공", {
           postId: id,
           authorId: post.authorId,
         });
       }
-
       return post;
     }, "게시물 조회");
   }
@@ -70,7 +66,6 @@ export class PostService {
         sortBy = "createdAt",
         sortOrder = "desc",
       } = options;
-
       const posts = await prisma.post.findMany({
         where: { authorId },
         orderBy: { [sortBy]: sortOrder },
@@ -290,6 +285,3 @@ export class PostService {
     }, "게시물 개수 조회");
   }
 }
-
-// 타입 검증을 위한 할당 (컴파일 시 타입 체크)
-// const _typeCheck: PostServiceType = PostService;
