@@ -1,6 +1,6 @@
 "use client";
 
-import Card from "@/shared/ui/Card/Card";
+import { Card } from "@/shared/ui/shadcn/Card";
 import { useState } from "react";
 import { Editor } from "@tiptap/core";
 import { EditorActionInstance } from "@/entities/TextEditor/model/editor.service";
