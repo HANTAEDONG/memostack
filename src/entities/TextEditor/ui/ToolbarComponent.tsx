@@ -1,7 +1,7 @@
 "use client";
 
 import { Editor, useEditorState } from "@tiptap/react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   headingOptions,
   listOptions,
@@ -21,7 +21,6 @@ const ToolbarComponent = ({
   isDarkMode,
   toggleDarkMode,
 }: ToolbarProps) => {
-  const ref = useRef<HTMLDivElement>(null);
   const editorState = useEditorState({
     editor,
     selector: ({ editor }: { editor: Editor }) =>
@@ -90,8 +89,8 @@ const ToolbarComponent = ({
         </Toolbar.Button>
       </div>
       <div className="flex gap-1 border-r border-gray-200 pr-2">
-        <Toolbar.Dropdown options={headingOptions} editor={editor} ref={ref} />
-        <Toolbar.Dropdown options={listOptions} editor={editor} ref={ref} />
+        <Toolbar.Dropdown options={headingOptions} editor={editor} />
+        <Toolbar.Dropdown options={listOptions} editor={editor} />
         <Toolbar.Button
           onClick={() => {
             toolbarOptions.codeBlock.action(editor);
