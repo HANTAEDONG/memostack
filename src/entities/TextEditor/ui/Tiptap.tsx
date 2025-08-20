@@ -41,7 +41,7 @@ const Tiptap = ({ setContent, setTitle }: TiptapProps) => {
           toggleDarkMode={toggleDarkMode}
         />
       )}
-      <div className="w-full h-14 pt-4 px-4 focus:outline-none">
+      <div className="w-full h-14 pt-4 px-5 focus:outline-none">
         <Input
           name="title"
           id="title"
