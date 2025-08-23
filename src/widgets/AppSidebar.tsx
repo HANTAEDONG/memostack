@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, Plus, Settings, Trash2 } from "lucide-react";
+import { FileText, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,8 +16,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/shared/ui/sidebar";
+} from "@/shared/ui/shadcn/sidebar";
 import LucideIcon from "@/shared/ui/Icon/LucideIcon";
+import { AuthButton } from "@/shared/ui/auth/AuthButton";
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -44,10 +45,10 @@ export function AppSidebar() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                isActive={pathname === "/create"}
+                isActive={pathname === "/write"}
                 className="bg-foreground text-white rounded-lg hover:bg-foreground/60 hover:text-white"
               >
-                <Link href="/create">
+                <Link href="/write">
                   <Plus />
                   <span>새 메모</span>
                 </Link>
@@ -85,17 +86,12 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <SidebarGroup>
+      <SidebarFooter className="pb-8 pt-0">
+        <SidebarGroup className="p-0">
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname === "/settings"}>
-                  <Link href="/settings">
-                    <Settings />
-                    <span>설정</span>
-                  </Link>
-                </SidebarMenuButton>
+              <SidebarMenuItem className="p-2">
+                <AuthButton />
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
