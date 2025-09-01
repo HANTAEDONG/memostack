@@ -7,7 +7,6 @@ import {
   ApiResponse,
 } from "@/shared/lib/Error/error-handler";
 import {
-  CreatePostData,
   PostWithAuthor,
   UpdatePostData,
   PostQueryOptions,
@@ -15,26 +14,6 @@ import {
 import { logger } from "@/shared/lib/Logger/logger";
 
 export class PostService {
-  static async create(postData: CreatePostData): Promise<ApiResponse<Post>> {
-    return await ErrorHandler.safeAsync(async () => {
-      const post = await prisma.post.create({
-        data: {
-          title: postData.title.trim(),
-          content: postData.content.trim(),
-          authorId: postData.authorId,
-          category: postData.category || "general",
-          status: postData.status || "draft",
-        },
-      });
-      logger.debug("새 게시물 생성 완료", {
-        postId: post.id,
-        authorId: post.authorId,
-        title: post.title.substring(0, 50) + "...",
-      });
-      return post;
-    }, "게시물 생성");
-  }
-
   static async findById(
     id: string
   ): Promise<ApiResponse<PostWithAuthor | null>> {
@@ -72,14 +51,12 @@ export class PostService {
         take: limit,
         skip: offset,
       });
-
       logger.debug("사용자별 게시물 조회 완료", {
         authorId,
         count: posts.length,
         sortBy,
         sortOrder,
       });
-
       return posts;
     }, "사용자별 게시물 조회");
   }
@@ -121,7 +98,6 @@ export class PostService {
           { content: { contains: filters.search, mode: "insensitive" } },
         ];
       }
-
       const posts = await prisma.post.findMany({
         where: whereConditions,
         include: {
@@ -280,7 +256,6 @@ export class PostService {
       const count = await prisma.post.count({
         where: authorId ? { authorId } : undefined,
       });
-
       return count;
     }, "게시물 개수 조회");
   }
