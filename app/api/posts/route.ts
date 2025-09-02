@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PostService } from "@/entities/Post";
+import { PostService, DraftPostService } from "@/entities/Post";
 import { auth } from "@/shared/lib/nextAuth";
 import { PostSortField, SortOrder } from "@/entities/Post/lib/post.types";
 
@@ -83,12 +83,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await PostService.create({
+    const result = await DraftPostService.createDraft({
       title,
       content,
       authorId: session.user.id,
-      category,
-      status,
+      category: category || "general",
     });
 
     if (!result.success) {
