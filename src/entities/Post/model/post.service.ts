@@ -2,9 +2,9 @@ import { prisma } from "@/shared/lib/prisma";
 import { Post } from "@prisma/client";
 import {
   ErrorHandler,
-  ErrorType,
-  AppError,
+  createError,
   ApiResponse,
+  ResponseBuilder,
 } from "@/shared/lib/Error/error-handler";
 import {
   PostWithAuthor,
@@ -13,11 +13,246 @@ import {
 } from "../lib/post.types";
 import { logger } from "@/shared/lib/Logger/logger";
 
+// 드래프트 생성용 데이터 타입
+export interface CreatePostDataWithAuth {
+  title: string;
+  content: string;
+  category: string;
+  authorId: string;
+}
+
 export class PostService {
+  // ===== 드래프트 관련 메서드들 =====
+
+  // 드래프트 생성
+  static async createDraft(
+    data: CreatePostDataWithAuth
+  ): Promise<ApiResponse<Post>> {
+    try {
+      if (!data.authorId) {
+        throw createError.validation("로그인이 필요합니다", "AUTH_REQUIRED");
+      }
+
+      const post = await prisma.post.create({
+        data: {
+          title: data.title,
+          content: data.content,
+          category: data.category || "general",
+          status: "draft",
+          authorId: data.authorId,
+        },
+      });
+
+      logger.info("드래프트 생성 완료", {
+        postId: post.id,
+        authorId: post.authorId,
+        title: post.title,
+      });
+
+      return ResponseBuilder.success(post);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "PostService.createDraft")
+      );
+    }
+  }
+
+  // 드래프트 목록 조회
+  static async getDraftPosts(authorId: string): Promise<ApiResponse<Post[]>> {
+    try {
+      if (!authorId) {
+        throw createError.validation("로그인이 필요합니다", "AUTH_REQUIRED");
+      }
+
+      const posts = await prisma.post.findMany({
+        where: {
+          status: "draft",
+          authorId: authorId,
+        },
+        orderBy: { updatedAt: "desc" },
+      });
+
+      logger.debug("드래프트 목록 조회 완료", {
+        authorId,
+        count: posts.length,
+      });
+
+      return ResponseBuilder.success(posts);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "PostService.getDraftPosts")
+      );
+    }
+  }
+
+  // 드래프트 업데이트
+  static async updateDraft(
+    id: string,
+    data: Partial<CreatePostDataWithAuth>,
+    authorId: string
+  ): Promise<ApiResponse<Post>> {
+    try {
+      if (!authorId) {
+        throw createError.validation("로그인이 필요합니다", "AUTH_REQUIRED");
+      }
+
+      // 먼저 해당 포스트가 존재하고 권한이 있는지 확인
+      const existingPost = await prisma.post.findUnique({
+        where: { id },
+      });
+
+      if (!existingPost) {
+        throw createError.validation(
+          "게시물을 찾을 수 없습니다",
+          "POST_NOT_FOUND"
+        );
+      }
+
+      if (existingPost.authorId !== authorId) {
+        throw createError.auth(
+          "게시물을 수정할 권한이 없습니다",
+          "UNAUTHORIZED_UPDATE"
+        );
+      }
+
+      if (existingPost.status !== "draft") {
+        throw createError.validation(
+          "드래프트 상태의 게시물만 수정할 수 있습니다",
+          "NOT_DRAFT_STATUS"
+        );
+      }
+
+      const post = await prisma.post.update({
+        where: { id },
+        data: {
+          ...(data.title && { title: data.title.trim() }),
+          ...(data.content && { content: data.content.trim() }),
+          ...(data.category && { category: data.category }),
+        },
+      });
+
+      logger.info("드래프트 업데이트 완료", {
+        postId: id,
+        authorId,
+        updatedFields: Object.keys(data),
+      });
+
+      return ResponseBuilder.success(post);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "PostService.updateDraft")
+      );
+    }
+  }
+
+  // 드래프트 발행
+  static async publishDraft(
+    id: string,
+    authorId: string
+  ): Promise<ApiResponse<Post>> {
+    try {
+      // 먼저 해당 포스트가 존재하고 권한이 있는지 확인
+      const existingPost = await prisma.post.findUnique({
+        where: { id },
+      });
+
+      if (!existingPost) {
+        throw createError.validation(
+          "게시물을 찾을 수 없습니다",
+          "POST_NOT_FOUND"
+        );
+      }
+
+      if (existingPost.authorId !== authorId) {
+        throw createError.auth(
+          "게시물을 발행할 권한이 없습니다",
+          "UNAUTHORIZED_PUBLISH"
+        );
+      }
+
+      if (existingPost.status !== "draft") {
+        throw createError.validation(
+          "드래프트 상태의 게시물만 발행할 수 있습니다",
+          "NOT_DRAFT_STATUS"
+        );
+      }
+
+      const post = await prisma.post.update({
+        where: { id },
+        data: {
+          status: "published",
+        },
+      });
+
+      logger.info("드래프트 발행 완료", {
+        postId: id,
+        authorId,
+        newStatus: "published",
+      });
+
+      return ResponseBuilder.success(post);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "PostService.publishDraft")
+      );
+    }
+  }
+
+  // 드래프트 삭제
+  static async deleteDraft(
+    id: string,
+    authorId: string
+  ): Promise<ApiResponse<boolean>> {
+    try {
+      // 먼저 해당 포스트가 존재하고 권한이 있는지 확인
+      const existingPost = await prisma.post.findUnique({
+        where: { id },
+      });
+
+      if (!existingPost) {
+        throw createError.validation(
+          "게시물을 찾을 수 없습니다",
+          "POST_NOT_FOUND"
+        );
+      }
+
+      if (existingPost.authorId !== authorId) {
+        throw createError.auth(
+          "게시물을 삭제할 권한이 없습니다",
+          "UNAUTHORIZED_DELETE"
+        );
+      }
+
+      if (existingPost.status !== "draft") {
+        throw createError.validation(
+          "드래프트 상태의 게시물만 삭제할 수 있습니다",
+          "NOT_DRAFT_STATUS"
+        );
+      }
+
+      await prisma.post.delete({
+        where: { id },
+      });
+
+      logger.info("드래프트 삭제 완료", {
+        postId: id,
+        authorId,
+      });
+
+      return ResponseBuilder.success(true);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "PostService.deleteDraft")
+      );
+    }
+  }
+
+  // ===== 일반 게시물 관련 메서드들 =====
+
   static async findById(
     id: string
   ): Promise<ApiResponse<PostWithAuthor | null>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       const post = await prisma.post.findUnique({
         where: { id },
         include: {
@@ -30,15 +265,19 @@ export class PostService {
           authorId: post.authorId,
         });
       }
-      return post;
-    }, "게시물 조회");
+      return ResponseBuilder.success(post);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "PostService.findById")
+      );
+    }
   }
 
   static async findByAuthor(
     authorId: string,
     options: PostQueryOptions = {}
   ): Promise<ApiResponse<Post[]>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       const {
         limit = 20,
         offset = 0,
@@ -57,14 +296,18 @@ export class PostService {
         sortBy,
         sortOrder,
       });
-      return posts;
-    }, "사용자별 게시물 조회");
+      return ResponseBuilder.success(posts);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "PostService.findByAuthor")
+      );
+    }
   }
 
   static async findAll(
     options: PostQueryOptions = {}
   ): Promise<ApiResponse<PostWithAuthor[]>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       const {
         limit = 20,
         offset = 0,
@@ -115,8 +358,12 @@ export class PostService {
         filters,
       });
 
-      return posts;
-    }, "전체 게시물 조회");
+      return ResponseBuilder.success(posts);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "PostService.findAll")
+      );
+    }
   }
 
   static async update(
@@ -124,26 +371,22 @@ export class PostService {
     updateData: UpdatePostData,
     authorId: string
   ): Promise<ApiResponse<Post>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       const existingPost = await prisma.post.findUnique({
         where: { id },
       });
 
       if (!existingPost) {
-        throw new AppError(
+        throw createError.validation(
           "게시물을 찾을 수 없습니다",
-          ErrorType.VALIDATION,
-          "POST_NOT_FOUND",
-          404
+          "POST_NOT_FOUND"
         );
       }
 
       if (existingPost.authorId !== authorId) {
-        throw new AppError(
+        throw createError.auth(
           "게시물을 수정할 권한이 없습니다",
-          ErrorType.AUTH,
-          "UNAUTHORIZED_UPDATE",
-          403
+          "UNAUTHORIZED_UPDATE"
         );
       }
 
@@ -163,35 +406,35 @@ export class PostService {
         updatedFields: Object.keys(updateData),
       });
 
-      return post;
-    }, "게시물 업데이트");
+      return ResponseBuilder.success(post);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "PostService.update")
+      );
+    }
   }
 
   static async delete(
     id: string,
     authorId: string
   ): Promise<ApiResponse<boolean>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       // 먼저 게시물이 존재하고 작성자가 맞는지 확인
       const existingPost = await prisma.post.findUnique({
         where: { id },
       });
 
       if (!existingPost) {
-        throw new AppError(
+        throw createError.validation(
           "게시물을 찾을 수 없습니다",
-          ErrorType.VALIDATION,
-          "POST_NOT_FOUND",
-          404
+          "POST_NOT_FOUND"
         );
       }
 
       if (existingPost.authorId !== authorId) {
-        throw new AppError(
+        throw createError.auth(
           "게시물을 삭제할 권한이 없습니다",
-          ErrorType.AUTH,
-          "UNAUTHORIZED_DELETE",
-          403
+          "UNAUTHORIZED_DELETE"
         );
       }
 
@@ -200,21 +443,23 @@ export class PostService {
       });
 
       logger.info("게시물 삭제 완료", { postId: id, authorId });
-      return true;
-    }, "게시물 삭제");
+      return ResponseBuilder.success(true);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "PostService.delete")
+      );
+    }
   }
 
   static async search(
     query: string,
     options: PostQueryOptions = {}
   ): Promise<ApiResponse<PostWithAuthor[]>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       if (!query.trim()) {
-        throw new AppError(
+        throw createError.validation(
           "검색어를 입력해주세요",
-          ErrorType.VALIDATION,
-          "EMPTY_SEARCH_QUERY",
-          400
+          "EMPTY_SEARCH_QUERY"
         );
       }
 
@@ -247,16 +492,24 @@ export class PostService {
         sortOrder,
       });
 
-      return posts;
-    }, "게시물 검색");
+      return ResponseBuilder.success(posts);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "PostService.search")
+      );
+    }
   }
 
   static async count(authorId?: string): Promise<ApiResponse<number>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       const count = await prisma.post.count({
         where: authorId ? { authorId } : undefined,
       });
-      return count;
-    }, "게시물 개수 조회");
+      return ResponseBuilder.success(count);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "PostService.count")
+      );
+    }
   }
 }
