@@ -3,7 +3,7 @@
 import { Card } from "@/shared/ui/shadcn/Card";
 import { useState } from "react";
 import { Editor } from "@tiptap/core";
-import { EditorActionInstance } from "@/entities/TextEditor/model/editor.service";
+
 
 interface ToolbarLinkCardProps {
   editor: Editor;
@@ -51,7 +51,9 @@ const ToolbarLinkCard = ({ editor, setOpen }: ToolbarLinkCardProps) => {
           <div
             className="w-full h-full outline-none border border-gray-300 focus:border-gray-400 dark:border-gray-500 px-2 py-2 rounded-md bg-blue-500 text-white text-semibold cursor-pointer hover:bg-blue-600"
             onClick={() => {
-              EditorActionInstance(editor)?.setLink(url);
+              if (url) {
+                editor.chain().focus().setLink({ href: url }).run();
+              }
               setOpen(false);
             }}
           >

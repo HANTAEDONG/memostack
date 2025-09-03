@@ -28,10 +28,9 @@ const ToolbarDropdown = ({ options, editor }: ToolbarDropdownProps) => {
 
   const handleToggle = (event: React.MouseEvent) => {
     const rect = event.currentTarget.getBoundingClientRect();
-    console.log("rect: ", rect);
     setDropdownPosition({
       top: rect.bottom + window.scrollY + 10,
-      left: rect.left + window.scrollX,
+      left: rect.left + window.scrollX - 10,
     });
     setIsOpen((prev) => !prev);
   };
@@ -44,7 +43,7 @@ const ToolbarDropdown = ({ options, editor }: ToolbarDropdownProps) => {
   }));
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative text-gray-700" ref={dropdownRef}>
       <div
         className="flex gap-0.5 text-[16px] h-8 py-2 items-center hover:bg-gray-200 rounded-md px-1 cursor-pointer"
         onClick={handleToggle}
@@ -66,9 +65,9 @@ const ToolbarDropdown = ({ options, editor }: ToolbarDropdownProps) => {
                 className="flex text-sm h-8 py-2 px-1 gap-1 items-center hover:bg-gray-200 rounded-md cursor-pointer"
                 key={option.key}
                 onClick={() => {
+                  console.log("option: ", option);
                   setSelected(option.element);
                   option.action();
-                  setIsOpen(false);
                 }}
               >
                 {option.element} {option.key}
