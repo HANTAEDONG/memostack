@@ -1,45 +1,10 @@
-import { ApiResponse } from "@/shared/lib/Error/error-handler";
-import { Post, User } from "@prisma/client";
+import { Post } from "@prisma/client";
 
-// export interface CreatePostData {
-//   id: string;
-//   title: string;
-//   content: string;
-//   authorId: string;
-//   category?: string;
-//   status?: string;
-//   createdAt: string;
-//   updatedAt: string;
-// }
-
-export interface UpdatePostData {
-  title?: string;
-  content?: string;
-  category?: string;
-  status?: string;
-}
-
-export interface PostWithAuthor extends Post {
-  author: User;
-}
-
-export interface PostFilters {
-  category?: string;
-  authorId?: string;
-  search?: string;
-  limit?: number;
-  offset?: number;
-  sortBy?: PostSortField;
-  sortOrder?: SortOrder;
-}
-export type PostSortField =
-  | "title"
-  | "category"
-  | "status"
-  | "createdAt"
-  | "updatedAt";
+// 정렬 관련 타입들
+export type PostSortField = "createdAt" | "updatedAt" | "title" | "category";
 export type SortOrder = "asc" | "desc";
 
+// 쿼리 옵션 타입
 export interface PostQueryOptions {
   limit?: number;
   offset?: number;
@@ -53,23 +18,55 @@ export interface PostQueryOptions {
   };
 }
 
-export type PostServiceType = {
-  postDraft(postData: Post): Promise<ApiResponse<Post>>;
-  findById(id: string): Promise<ApiResponse<PostWithAuthor | null>>;
-  findAll(options?: PostQueryOptions): Promise<ApiResponse<PostWithAuthor[]>>;
-  findByAuthor(
-    authorId: string,
-    options?: PostQueryOptions
-  ): Promise<ApiResponse<Post[]>>;
-  update(
-    id: string,
-    updateData: UpdatePostData,
-    authorId: string
-  ): Promise<ApiResponse<Post>>;
-  delete(id: string, authorId: string): Promise<ApiResponse<boolean>>;
-  search(
-    query: string,
-    options?: PostQueryOptions
-  ): Promise<ApiResponse<PostWithAuthor[]>>;
-  count(authorId?: string): Promise<ApiResponse<number>>;
-};
+// API 관련 타입들
+export interface CreatePostData {
+  title: string;
+  content: string;
+  category: string;
+}
+
+export interface UpdatePostData {
+  title?: string;
+  content?: string;
+  category?: string;
+  status?: string;
+}
+
+// UI 관련 타입들
+export interface CreatePostFormProps {
+  // 데이터
+  title: string;
+  content: string;
+  isSaving: boolean;
+  isLoading: boolean;
+  authLoading: boolean;
+  isAuthenticated: boolean;
+  lastSaved?: Date;
+  saveError?: string;
+  loadError?: string;
+
+  // 이벤트 핸들러
+  onTitleChange: (title: string) => void;
+  onContentChange: (content: string) => void;
+  onManualSave: () => Promise<boolean>;
+  onClearDraft: () => void;
+}
+
+// 비즈니스 로직 관련 타입들
+export interface EditPostValidationError {
+  code: string;
+  message: string;
+}
+
+// PostWithAuthor 타입 추가
+export interface PostWithAuthor extends Post {
+  author: {
+    id: string;
+    name: string | null;
+    email: string;
+    image?: string | null;
+  };
+}
+
+// 기존 타입들 재export
+export type { Post };
