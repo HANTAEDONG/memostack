@@ -2,13 +2,14 @@ import { prisma } from "@/shared/lib/prisma";
 import { User } from "@prisma/client";
 import {
   ErrorHandler,
-  ErrorType,
-  AppError,
+  createError,
   ApiResponse,
+  ResponseBuilder,
 } from "@/shared/lib/Error/error-handler";
 import { logger } from "@/shared/lib/Logger/logger";
 
 export interface CreateUserData {
+  id: string; // Google OAuth ID를 직접 받음
   email: string;
   name?: string | null;
   image?: string | null;
@@ -24,7 +25,7 @@ export class UserService {
    * 이메일로 사용자 조회
    */
   static async findByEmail(email: string): Promise<ApiResponse<User | null>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       const user = await prisma.user.findUnique({
         where: { email },
       });
@@ -33,15 +34,19 @@ export class UserService {
         logger.debug("사용자 조회 성공", { email, userId: user.id });
       }
 
-      return user;
-    }, "이메일로 사용자 조회");
+      return ResponseBuilder.success(user);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "UserService.findByEmail")
+      );
+    }
   }
 
   /**
    * ID로 사용자 조회
    */
   static async findById(id: string): Promise<ApiResponse<User | null>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       const user = await prisma.user.findUnique({
         where: { id },
       });
@@ -50,27 +55,30 @@ export class UserService {
         logger.debug("사용자 ID 조회 성공", { userId: id });
       }
 
-      return user;
-    }, "ID로 사용자 조회");
+      return ResponseBuilder.success(user);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "UserService.findById")
+      );
+    }
   }
 
   /**
    * 새 사용자 생성
    */
   static async create(userData: CreateUserData): Promise<ApiResponse<User>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       // 입력 유효성 검사
       if (!userData.email || !userData.email.includes("@")) {
-        throw new AppError(
+        throw createError.validation(
           "올바른 이메일 주소를 입력해주세요",
-          ErrorType.VALIDATION,
-          "INVALID_EMAIL",
-          400
+          "INVALID_EMAIL"
         );
       }
 
       const user = await prisma.user.create({
         data: {
+          id: userData.id, // Google OAuth ID를 직접 설정
           email: userData.email,
           name: userData.name,
           image: userData.image,
@@ -82,8 +90,12 @@ export class UserService {
         email: user.email,
       });
 
-      return user;
-    }, "사용자 생성");
+      return ResponseBuilder.success(user);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "UserService.create")
+      );
+    }
   }
 
   /**
@@ -92,16 +104,14 @@ export class UserService {
   static async findOrCreate(
     userData: CreateUserData
   ): Promise<ApiResponse<User>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       // 먼저 기존 사용자 조회
       const existingUserResult = await this.findByEmail(userData.email);
 
       if (!existingUserResult.success) {
-        throw new AppError(
+        throw createError.database(
           existingUserResult.error.message,
-          existingUserResult.error.type,
-          existingUserResult.error.code,
-          existingUserResult.error.statusCode
+          existingUserResult.error.code
         );
       }
 
@@ -119,15 +129,13 @@ export class UserService {
         });
 
         if (!updateResult.success) {
-          throw new AppError(
+          throw createError.database(
             updateResult.error.message,
-            updateResult.error.type,
-            updateResult.error.code,
-            updateResult.error.statusCode
+            updateResult.error.code
           );
         }
 
-        return updateResult.data;
+        return updateResult;
       }
 
       // 기존 사용자가 없으면 새로 생성
@@ -135,16 +143,18 @@ export class UserService {
       const createResult = await this.create(userData);
 
       if (!createResult.success) {
-        throw new AppError(
+        throw createError.database(
           createResult.error.message,
-          createResult.error.type,
-          createResult.error.code,
-          createResult.error.statusCode
+          createResult.error.code
         );
       }
 
-      return createResult.data;
-    }, "사용자 찾기/생성");
+      return createResult;
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "UserService.findOrCreate")
+      );
+    }
   }
 
   /**
@@ -154,7 +164,7 @@ export class UserService {
     id: string,
     updateData: UpdateUserData
   ): Promise<ApiResponse<User>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       const user = await prisma.user.update({
         where: { id },
         data: updateData,
@@ -165,36 +175,48 @@ export class UserService {
         updatedFields: Object.keys(updateData),
       });
 
-      return user;
-    }, "사용자 업데이트");
+      return ResponseBuilder.success(user);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "UserService.update")
+      );
+    }
   }
 
   /**
    * 사용자 삭제
    */
   static async delete(id: string): Promise<ApiResponse<boolean>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       await prisma.user.delete({
         where: { id },
       });
 
       logger.info("사용자 삭제 완료", { userId: id });
-      return true;
-    }, "사용자 삭제");
+      return ResponseBuilder.success(true);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "UserService.delete")
+      );
+    }
   }
 
   /**
    * 모든 사용자 조회 (관리자용)
    */
   static async findAll(limit: number = 50): Promise<ApiResponse<User[]>> {
-    return await ErrorHandler.safeAsync(async () => {
+    try {
       const users = await prisma.user.findMany({
         take: limit,
         orderBy: { createdAt: "desc" },
       });
 
       logger.debug("사용자 목록 조회 완료", { count: users.length });
-      return users;
-    }, "사용자 목록 조회");
+      return ResponseBuilder.success(users);
+    } catch (error) {
+      return ResponseBuilder.error(
+        ErrorHandler.handleError(error, "UserService.findAll")
+      );
+    }
   }
 }
