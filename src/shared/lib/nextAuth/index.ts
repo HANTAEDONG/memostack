@@ -2,7 +2,6 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { UserService } from "@/entities/User";
 import { logger } from "../Logger/logger";
-import { ErrorHandler, AppError } from "@/shared/lib/Error/error-handler";
 
 declare module "next-auth" {
   interface Session {
@@ -32,37 +31,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user, account, profile }) {
       if (user && account && profile) {
-        logger.debug("새로운 OAuth 로그인", {
-          email: user.email,
-          provider: account.provider,
-        });
-        const result = await ErrorHandler.safeAsync(async () => {
+        try {
           const userResult = await UserService.findOrCreate({
+            id: user.id!,
             email: user.email!,
             name: user.name,
             image: user.image,
           });
-          if (!userResult.success) {
-            throw new AppError(
-              userResult.error.message,
-              userResult.error.type,
-              userResult.error.code,
-              userResult.error.statusCode
-            );
+
+          if (userResult.success) {
+            const dbUser = userResult.data;
+            // Google OAuth ID가 User.id가 되므로 동일함
+            token.dbUserId = dbUser.id; // Google OAuth ID
+            token.sub = dbUser.id; // Google OAuth ID
+            logger.debug("사용자 DB 저장/업데이트 성공", {
+              userId: dbUser.id,
+              email: dbUser.email,
+            });
+          } else {
+            logger.debug("사용자 DB 저장 실패", userResult.error);
+            token.sub = user.id; // 실패해도 Google OAuth ID 사용
           }
-          return userResult.data;
-        }, "OAuth 사용자 처리");
-        if (result.success) {
-          const dbUser = result.data;
-          token.dbUserId = dbUser.id;
-          token.sub = dbUser.id;
-          logger.debug("사용자 DB 저장/업데이트 성공", {
-            userId: dbUser.id,
-            email: dbUser.email,
-          });
-        } else {
-          logger.debug("사용자 DB 저장 실패", result.error);
-          token.sub = user.id;
+        } catch (error) {
+          logger.error("OAuth 사용자 처리 중 오류", error);
+          token.sub = user.id; // 오류 발생해도 Google OAuth ID 사용
         }
       }
       return token;
@@ -76,6 +68,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
     async redirect({ url, baseUrl }) {
+      if (url.includes("callbackUrl") || url.includes("auth-popup")) {
+        return `${baseUrl}/auth/callback`;
+      }
+
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
