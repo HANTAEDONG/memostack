@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/ui/shadcn/dropdown-menu";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, MoreVertical } from "lucide-react";
 
 interface UserProfileDropdownProps {
   user: {
@@ -30,15 +30,15 @@ export function UserProfileDropdown({
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-auto p-2 w-full justify-start gap-3 rounded-md hover:bg-sidebar-accent"
+          className="relative h-auto p-2 w-full justify-start gap-3 rounded-md hover:bg-sidebar-accent border border-input"
         >
-          <Avatar className="h-8 w-8">
+          <Avatar className="h-8 w-8 flex-shrink-0">
             <AvatarImage src={user.image || ""} alt={user.name || ""} />
             <AvatarFallback>
               {user.name?.charAt(0) || user.email?.charAt(0) || "U"}
             </AvatarFallback>
           </Avatar>
-          <div className="flex flex-col items-start min-w-0 flex-1">
+          <div className="flex flex-col items-start min-w-0 flex-1 text-left">
             <div className="text-sm font-medium truncate w-full">
               {user.name || user.email}
             </div>
@@ -46,6 +46,7 @@ export function UserProfileDropdown({
               {user.email}
             </div>
           </div>
+          <MoreVertical className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-64" align="start" forceMount>
