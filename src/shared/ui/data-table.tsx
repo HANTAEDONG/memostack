@@ -32,11 +32,10 @@ import {
   IconLayoutColumns,
   IconLoader,
   IconPlus,
-  IconTrendingUp,
+  IconRefresh,
   IconEdit,
   IconTrash,
   IconEye,
-  IconRefresh,
 } from "@tabler/icons-react";
 import {
   ColumnDef,
@@ -53,29 +52,11 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-// import { toast } from "sonner";
 import { z } from "zod";
-import { useIsMobile } from "@/shared/hooks/use-mobile";
 import { Badge } from "@/shared/ui/shadcn/badge";
 import { Button } from "@/shared/ui/shadcn/button";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/shared/ui/shadcn/chart";
+import Link from "next/link";
 import { Checkbox } from "@/shared/ui/shadcn/checkbox";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/shared/ui/shadcn/drawer";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -84,7 +65,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/ui/shadcn/dropdown-menu";
-import { Input } from "@/shared/ui/shadcn/input";
 import { Label } from "@/shared/ui/shadcn/label";
 import {
   Select,
@@ -93,7 +73,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/ui/shadcn/select";
-import { Separator } from "@/shared/ui/shadcn/separator";
 import {
   Table,
   TableBody,
@@ -172,7 +151,16 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
       <DataTableColumnHeader column={column} title="타이틀" />
     ),
     cell: ({ row }) => {
-      return <TableCellViewer item={row.original} />;
+      return (
+        <Link href={`/write?id=${row.original.id}`}>
+          <Button
+            variant="link"
+            className="text-foreground w-fit px-0 text-left h-auto"
+          >
+            {row.original.title}
+          </Button>
+        </Link>
+      );
     },
     enableHiding: false,
     enableSorting: true,
@@ -399,12 +387,12 @@ export function DataTable({
                   {sort.id === "title"
                     ? "제목"
                     : sort.id === "category"
-                      ? "카테고리"
-                      : sort.id === "status"
-                        ? "상태"
-                        : sort.id === "updatedAt"
-                          ? "수정일"
-                          : sort.id}
+                    ? "카테고리"
+                    : sort.id === "status"
+                    ? "상태"
+                    : sort.id === "updatedAt"
+                    ? "수정일"
+                    : sort.id}
                   {sort.desc ? " ↓" : " ↑"}
                 </Badge>
               ))}
@@ -606,166 +594,5 @@ export function DataTable({
         <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
       </TabsContent>
     </Tabs>
-  );
-}
-
-const chartData = [
-  { month: "January", views: 186, likes: 80 },
-  { month: "February", views: 305, likes: 200 },
-  { month: "March", views: 237, likes: 120 },
-  { month: "April", views: 73, likes: 190 },
-  { month: "May", views: 209, likes: 130 },
-  { month: "June", views: 214, likes: 140 },
-];
-
-const chartConfig = {
-  views: {
-    label: "Views",
-    color: "var(--primary)",
-  },
-  likes: {
-    label: "Likes",
-    color: "var(--primary)",
-  },
-} satisfies ChartConfig;
-
-function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
-  const isMobile = useIsMobile();
-
-  return (
-    <Drawer direction={isMobile ? "bottom" : "right"}>
-      <DrawerTrigger asChild>
-        <Button variant="link" className="text-foreground w-fit px-0 text-left">
-          {item.title}
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="gap-1">
-          <DrawerTitle>{item.title}</DrawerTitle>
-          <DrawerDescription>
-            Post analytics for the last 6 months
-          </DrawerDescription>
-        </DrawerHeader>
-        <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
-          {!isMobile && (
-            <>
-              <ChartContainer config={chartConfig}>
-                <AreaChart
-                  accessibilityLayer
-                  data={chartData}
-                  margin={{
-                    left: 0,
-                    right: 10,
-                  }}
-                >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="month"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) => value.slice(0, 3)}
-                    hide
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent indicator="dot" />}
-                  />
-                  <Area
-                    dataKey="likes"
-                    type="natural"
-                    fill="var(--color-likes)"
-                    fillOpacity={0.6}
-                    stroke="var(--color-likes)"
-                    stackId="a"
-                  />
-                  <Area
-                    dataKey="views"
-                    type="natural"
-                    fill="var(--color-views)"
-                    fillOpacity={0.4}
-                    stroke="var(--color-views)"
-                    stackId="a"
-                  />
-                </AreaChart>
-              </ChartContainer>
-              <Separator />
-              <div className="grid gap-2">
-                <div className="flex gap-2 leading-none font-medium">
-                  Trending up by 5.2% this month{" "}
-                  <IconTrendingUp className="size-4" />
-                </div>
-                <div className="text-muted-foreground">
-                  Showing post performance for the last 6 months. This post is
-                  performing well and gaining traction.
-                </div>
-              </div>
-              <Separator />
-            </>
-          )}
-          <form className="flex flex-col gap-4">
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="title">Title</Label>
-              <Input id="title" defaultValue={item.title} />
-            </div>
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="content">Content</Label>
-              <Input id="content" defaultValue={item.content} />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="category">Category</Label>
-                <Select defaultValue={item.category}>
-                  <SelectTrigger id="category" className="w-full">
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="기술">기술</SelectItem>
-                    <SelectItem value="일상">일상</SelectItem>
-                    <SelectItem value="여행">여행</SelectItem>
-                    <SelectItem value="음식">음식</SelectItem>
-                    <SelectItem value="영화">영화</SelectItem>
-                    <SelectItem value="책">책</SelectItem>
-                    <SelectItem value="운동">운동</SelectItem>
-                    <SelectItem value="음악">음악</SelectItem>
-                    <SelectItem value="게임">게임</SelectItem>
-                    <SelectItem value="프로그래밍">프로그래밍</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="status">Status</Label>
-                <Select defaultValue={item.status}>
-                  <SelectTrigger id="status" className="w-full">
-                    <SelectValue placeholder="Select a status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Done">Done</SelectItem>
-                    <SelectItem value="In Progress">In Progress</SelectItem>
-                    <SelectItem value="Not Started">Not Started</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="authorId">Author ID</Label>
-                <Input id="authorId" defaultValue={item.authorId} />
-              </div>
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="createdAt">Created At</Label>
-                <Input id="createdAt" defaultValue={item.createdAt} />
-              </div>
-            </div>
-          </form>
-        </div>
-        <DrawerFooter>
-          <Button>Submit</Button>
-          <DrawerClose asChild>
-            <Button variant="outline">Done</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
   );
 }

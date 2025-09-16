@@ -1,15 +1,24 @@
 import { Suspense } from "react";
 import CreatePostFormContainer from "@/features/EditPost/containers/CreatePostFormContainer";
 
-function WriteContent() {
+interface WritePageProps {
+  searchParams?: Promise<{
+    id?: string;
+  }>;
+}
+
+function WriteContent({ postId }: { postId?: string }) {
   return (
     <div className="w-full h-full min-h-screen px-4 max-sm:px-0 bg-background">
-      <CreatePostFormContainer />
+      <CreatePostFormContainer postId={postId} />
     </div>
   );
 }
 
-export default function Write() {
+export default async function Write({ searchParams }: WritePageProps) {
+  const resolvedSearchParams = await searchParams;
+  const postId = resolvedSearchParams?.id;
+
   return (
     <Suspense
       fallback={
@@ -21,7 +30,7 @@ export default function Write() {
         </div>
       }
     >
-      <WriteContent />
+      <WriteContent postId={postId} />
     </Suspense>
   );
 }

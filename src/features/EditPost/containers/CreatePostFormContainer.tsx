@@ -3,7 +3,13 @@
 import { useEditPost } from "../model/useEditPost";
 import CreatePostForm from "../ui/CreatePostForm";
 
-export default function CreatePostFormContainer() {
+interface CreatePostFormContainerProps {
+  postId?: string;
+}
+
+export default function CreatePostFormContainer({
+  postId,
+}: CreatePostFormContainerProps) {
   const {
     setContent,
     setTitle,
@@ -16,7 +22,7 @@ export default function CreatePostFormContainer() {
     loadError,
     isAuthenticated,
     authLoading,
-  } = useEditPost();
+  } = useEditPost(postId);
 
   const handleManualSave = async (): Promise<boolean> => {
     return await updateDraft();

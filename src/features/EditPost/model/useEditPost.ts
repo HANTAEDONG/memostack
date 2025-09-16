@@ -8,23 +8,24 @@ import { useAuth } from "@/shared/hooks/useAuth";
 import { EditPostService } from "./editPost.service";
 import debounce from "@/shared/lib/debounce";
 
-export const useEditPost = () => {
+export const useEditPost = (postId?: string) => {
   const searchParams = useSearchParams();
-  const postId = searchParams?.get("id") || "";
+  const urlPostId = searchParams?.get("id") || "";
+  const finalPostId = postId || urlPostId;
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
 
   const {
     data: existingPost,
     isLoading: isPostLoading,
     error: postError,
-  } = usePostById(postId || undefined);
+  } = usePostById(finalPostId || undefined);
 
-  const updatePostMutation = useUpdatePost(postId);
+  const updatePostMutation = useUpdatePost(finalPostId);
 
   const [postData, setPostData] = useState<
     Omit<Post, "status" | "createdAt" | "updatedAt">
   >({
-    id: postId,
+    id: finalPostId,
     title: "",
     content: "",
     authorId: user?.id || "",
@@ -44,11 +45,11 @@ export const useEditPost = () => {
         category: existingPost.category,
       });
       console.log("기존 포스트 데이터 로딩 성공:", existingPost);
-    } else if (postId && !isPostLoading && !postError) {
+    } else if (finalPostId && !isPostLoading && !postError) {
       // 포스트가 없으면 새 포스트로 초기화
-      setPostData((prev) => ({ ...prev, id: postId }));
+      setPostData((prev) => ({ ...prev, id: finalPostId }));
     }
-  }, [existingPost, postId, isPostLoading, postError]);
+  }, [existingPost, finalPostId, isPostLoading, postError]);
 
   // 사용자 로그인 상태가 변경될 때 authorId 업데이트
   useEffect(() => {
@@ -59,7 +60,7 @@ export const useEditPost = () => {
 
   // URL에서 ID가 변경될 때 새 포스트로 초기화
   useEffect(() => {
-    if (!postId) {
+    if (!finalPostId) {
       setPostData((prev) => ({
         ...prev,
         id: "",
@@ -68,7 +69,7 @@ export const useEditPost = () => {
         category: "general",
       }));
     }
-  }, [postId]);
+  }, [finalPostId]);
 
   // 비즈니스 로직을 서비스로 위임
   const updateDraft = useCallback(async () => {
@@ -76,7 +77,7 @@ export const useEditPost = () => {
 
     try {
       const result = await EditPostService.updateDraft(
-        postId,
+        finalPostId,
         {
           title: postData.title,
           content: postData.content,
@@ -91,7 +92,13 @@ export const useEditPost = () => {
       console.error("드래프트 업데이트 실패:", error);
       return false;
     }
-  }, [postData.title, postData.content, postData.category, postId, user?.id]);
+  }, [
+    postData.title,
+    postData.content,
+    postData.category,
+    finalPostId,
+    user?.id,
+  ]);
 
   // debounce 함수를 useMemo로 생성
   const debouncedAutoSave = useMemo(
