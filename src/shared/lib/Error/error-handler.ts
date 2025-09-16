@@ -59,7 +59,7 @@ export class ErrorHandler {
     try {
       return await fn();
     } catch (error) {
-      const appError = this.handleError(error, context);
+      const appError = this.handleError(error);
       this.logError(appError, context);
       throw appError;
     }
@@ -70,14 +70,14 @@ export class ErrorHandler {
     try {
       return fn();
     } catch (error) {
-      const appError = this.handleError(error, context);
+      const appError = this.handleError(error);
       this.logError(appError, context);
       throw appError;
     }
   }
 
   // 에러 변환
-  static handleError(error: unknown, context: string): AppError {
+  static handleError(error: unknown): AppError {
     // 이미 AppError면 그대로 반환
     if (error instanceof AppError) {
       return error;

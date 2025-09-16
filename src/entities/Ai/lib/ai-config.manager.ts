@@ -258,7 +258,7 @@ export class AIConfigManager {
           errors: validation.errors,
         };
       }
-    } catch (error) {
+    } catch {
       return {
         success: false,
         errors: ["JSON 파싱 오류가 발생했습니다."],

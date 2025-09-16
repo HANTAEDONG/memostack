@@ -51,9 +51,7 @@ export class PostService {
 
       return ResponseBuilder.success(post);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "PostService.createDraft")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -79,9 +77,7 @@ export class PostService {
 
       return ResponseBuilder.success(posts);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "PostService.getDraftPosts")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -139,9 +135,7 @@ export class PostService {
 
       return ResponseBuilder.success(post);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "PostService.updateDraft")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -192,9 +186,7 @@ export class PostService {
 
       return ResponseBuilder.success(post);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "PostService.publishDraft")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -241,9 +233,7 @@ export class PostService {
 
       return ResponseBuilder.success(true);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "PostService.deleteDraft")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -267,9 +257,7 @@ export class PostService {
       }
       return ResponseBuilder.success(post);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "PostService.findById")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -298,9 +286,7 @@ export class PostService {
       });
       return ResponseBuilder.success(posts);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "PostService.findByAuthor")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -360,9 +346,7 @@ export class PostService {
 
       return ResponseBuilder.success(posts);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "PostService.findAll")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -408,9 +392,7 @@ export class PostService {
 
       return ResponseBuilder.success(post);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "PostService.update")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -445,9 +427,7 @@ export class PostService {
       logger.info("게시물 삭제 완료", { postId: id, authorId });
       return ResponseBuilder.success(true);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "PostService.delete")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -494,9 +474,7 @@ export class PostService {
 
       return ResponseBuilder.success(posts);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "PostService.search")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -507,9 +485,7 @@ export class PostService {
       });
       return ResponseBuilder.success(count);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "PostService.count")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 }

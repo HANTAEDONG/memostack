@@ -10,6 +10,21 @@ const EditorOptions = {
       heading: {
         levels: [1, 2, 3],
       },
+      bulletList: {
+        HTMLAttributes: {
+          class: "list-disc list-outside ml-4",
+        },
+      },
+      orderedList: {
+        HTMLAttributes: {
+          class: "list-decimal list-outside ml-4",
+        },
+      },
+      listItem: {
+        HTMLAttributes: {
+          class: "mb-1",
+        },
+      },
     }),
     Highlight,
     TextAlign.configure({
@@ -69,7 +84,6 @@ const EditorOptions = {
       },
     }),
   ],
-  content: '<h1 data-placeholder="제목을 입력하세요..."></h1><p></p>',
   immediatelyRender: false,
   autofocus: false,
   enableContentCheck: true,

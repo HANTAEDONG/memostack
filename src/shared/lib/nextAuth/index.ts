@@ -68,10 +68,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
     async redirect({ url, baseUrl }) {
+      // 팝업 로그인인 경우 콜백 페이지로 리다이렉트
       if (url.includes("callbackUrl") || url.includes("auth-popup")) {
+        console.log("팝업 로그인 감지, 콜백 페이지로 리다이렉트:", url);
         return `${baseUrl}/auth/callback`;
       }
 
+      console.log("일반 리다이렉트:", url);
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;

@@ -19,6 +19,7 @@ import {
 } from "@/shared/ui/shadcn/sidebar";
 import LucideIcon from "@/shared/ui/Icon/LucideIcon";
 import { AuthButton } from "@/shared/ui/auth/AuthButton";
+import DarkModeToggle from "@/shared/ui/DarkModeToggle";
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -26,17 +27,20 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground group-data-[collapsible=icon]:flex-shrink-0">
-            <LucideIcon
-              name="BookText"
-              size={20}
-              className="group-data-[collapsible=icon]:!w-5 group-data-[collapsible=icon]:!h-5"
-            />
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground group-data-[collapsible=icon]:flex-shrink-0">
+              <LucideIcon
+                name="BookText"
+                size={20}
+                className="group-data-[collapsible=icon]:!w-5 group-data-[collapsible=icon]:!h-5"
+              />
+            </div>
+            <div className="flex flex-col">
+              <h1 className="text-xl font-semibold">MemoStack</h1>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <h1 className="text-xl font-semibold">MemoStack</h1>
-          </div>
+          <DarkModeToggle size="sm" />
         </div>
       </SidebarHeader>
       <SidebarContent>
@@ -46,7 +50,7 @@ export function AppSidebar() {
               <SidebarMenuButton
                 asChild
                 isActive={pathname === "/write"}
-                className="bg-foreground text-white rounded-lg hover:bg-foreground/60 hover:text-white"
+                className="bg-foreground text-white dark:text-black rounded-lg hover:bg-foreground/60 hover:text-white dark:hover:text-black"
               >
                 <Link href="/write">
                   <Plus />
@@ -67,8 +71,8 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname === "/"}>
-                  <Link href="/">
+                <SidebarMenuButton asChild isActive={pathname === "/dashboard"}>
+                  <Link href="/dashboard">
                     <FileText />
                     <span>모든 메모</span>
                   </Link>

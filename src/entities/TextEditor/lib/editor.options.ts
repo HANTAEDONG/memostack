@@ -1,5 +1,4 @@
 import { ToolbarOption } from "../lib/editor.types";
-import { EditorActionInstance } from "@/entities/TextEditor/model/editor.service";
 
 export const headingOptions: ToolbarOption[] = [
   {
@@ -7,7 +6,8 @@ export const headingOptions: ToolbarOption[] = [
     label: "제목 1",
     icon: "Heading1",
     type: "node",
-    action: (editor) => EditorActionInstance(editor)?.toggleHeading(1),
+    action: (editor) =>
+      editor.chain().focus().toggleHeading({ level: 1 }).run(),
     isActive: (editor) => editor.isActive("heading", { level: 1 }),
   },
   {
@@ -15,7 +15,8 @@ export const headingOptions: ToolbarOption[] = [
     label: "제목 2",
     icon: "Heading2",
     type: "node",
-    action: (editor) => EditorActionInstance(editor)?.toggleHeading(2),
+    action: (editor) =>
+      editor.chain().focus().toggleHeading({ level: 2 }).run(),
     isActive: (editor) => editor.isActive("heading", { level: 2 }),
   },
   {
@@ -23,7 +24,8 @@ export const headingOptions: ToolbarOption[] = [
     label: "제목 3",
     icon: "Heading3",
     type: "node",
-    action: (editor) => EditorActionInstance(editor)?.toggleHeading(3),
+    action: (editor) =>
+      editor.chain().focus().toggleHeading({ level: 3 }).run(),
     isActive: (editor) => editor.isActive("heading", { level: 3 }),
   },
 ];
@@ -34,7 +36,7 @@ export const listOptions: ToolbarOption[] = [
     label: "순서 있는 목록",
     icon: "ListOrdered",
     type: "node",
-    action: (editor) => EditorActionInstance(editor)?.toggleOrderedList(),
+    action: (editor) => editor.chain().focus().toggleOrderedList().run(),
     isActive: (editor) => editor.isActive("orderedList"),
   },
   {
@@ -42,7 +44,7 @@ export const listOptions: ToolbarOption[] = [
     label: "순서 없는 목록",
     icon: "List",
     type: "node",
-    action: (editor) => EditorActionInstance(editor)?.toggleBulletList(),
+    action: (editor) => editor.chain().focus().toggleBulletList().run(),
     isActive: (editor) => editor.isActive("bulletList"),
   },
   {
@@ -50,7 +52,7 @@ export const listOptions: ToolbarOption[] = [
     label: "할 일 목록",
     icon: "SquareCheck",
     type: "node",
-    action: (editor) => EditorActionInstance(editor)?.toggleTaskList(),
+    action: (editor) => editor.chain().focus().toggleTaskList().run(),
     isActive: (editor) => editor.isActive("taskList"),
   },
 ];
@@ -61,7 +63,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "굵게",
     icon: "Bold",
     type: "mark",
-    action: (editor) => EditorActionInstance(editor)?.toggleBold(),
+    action: (editor) => editor.chain().focus().toggleBold().run(),
     isActive: (editor) => editor.isActive("bold"),
   },
   italic: {
@@ -69,7 +71,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "기울임",
     icon: "Italic",
     type: "mark",
-    action: (editor) => EditorActionInstance(editor)?.toggleItalic(),
+    action: (editor) => editor.chain().focus().toggleItalic().run(),
     isActive: (editor) => editor.isActive("italic"),
   },
   underline: {
@@ -77,7 +79,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "밑줄",
     icon: "Underline",
     type: "mark",
-    action: (editor) => EditorActionInstance(editor)?.toggleUnderline(),
+    action: (editor) => editor.chain().focus().toggleUnderline().run(),
     isActive: (editor) => editor.isActive("underline"),
   },
   strike: {
@@ -85,7 +87,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "취소선",
     icon: "Strikethrough",
     type: "mark",
-    action: (editor) => EditorActionInstance(editor)?.toggleStrike(),
+    action: (editor) => editor.chain().focus().toggleStrike().run(),
     isActive: (editor) => editor.isActive("strike"),
   },
   code: {
@@ -93,7 +95,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "인라인 코드",
     icon: "Code",
     type: "mark",
-    action: (editor) => EditorActionInstance(editor)?.toggleCode(),
+    action: (editor) => editor.chain().focus().toggleCode().run(),
     isActive: (editor) => editor.isActive("code"),
   },
   codeBlock: {
@@ -101,7 +103,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "코드 블록",
     icon: "Code",
     type: "node",
-    action: (editor) => EditorActionInstance(editor)?.toggleCodeBlock(),
+    action: (editor) => editor.chain().focus().toggleCodeBlock().run(),
     isActive: (editor) => editor.isActive("codeBlock"),
   },
   blockquote: {
@@ -109,7 +111,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "인용구",
     icon: "Quote",
     type: "node",
-    action: (editor) => EditorActionInstance(editor)?.toggleBlockquote(),
+    action: (editor) => editor.chain().focus().toggleBlockquote().run(),
     isActive: (editor) => editor.isActive("blockquote"),
   },
   horizontalRule: {
@@ -117,7 +119,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "구분선",
     icon: "Minus",
     type: "action",
-    action: (editor) => EditorActionInstance(editor)?.setHorizontalRule(),
+    action: (editor) => editor.chain().focus().setHorizontalRule().run(),
   },
   link: {
     id: "link",
@@ -127,7 +129,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     action: (editor) => {
       const url = window.prompt("URL을 입력하세요:");
       if (url) {
-        EditorActionInstance(editor)?.setLink(url);
+        editor.chain().focus().setLink({ href: url }).run();
       }
     },
     isActive: (editor) => editor.isActive("link"),
@@ -137,7 +139,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "하이라이트",
     icon: "Highlighter",
     type: "mark",
-    action: (editor) => EditorActionInstance(editor)?.toggleHighlight(),
+    action: (editor) => editor.chain().focus().toggleHighlight().run(),
     isActive: (editor) => editor.isActive("highlight"),
   },
   unlink: {
@@ -145,7 +147,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "링크 제거",
     icon: "Unlink",
     type: "action",
-    action: (editor) => EditorActionInstance(editor)?.unsetLink(),
+    action: (editor) => editor.chain().focus().unsetLink().run(),
     isActive: (editor) => editor.isActive("link"),
   },
   undo: {
@@ -153,7 +155,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "실행 취소",
     icon: "Undo",
     type: "action",
-    action: (editor) => EditorActionInstance(editor)?.undo(),
+    action: (editor) => editor.chain().focus().undo().run(),
     isDisabled: (editor) => !editor.can().undo(),
   },
   redo: {
@@ -161,7 +163,7 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "다시 실행",
     icon: "Redo",
     type: "action",
-    action: (editor) => EditorActionInstance(editor)?.redo(),
+    action: (editor) => editor.chain().focus().redo().run(),
     isDisabled: (editor) => !editor.can().redo(),
   },
   selectAll: {
@@ -169,34 +171,34 @@ export const toolbarOptions: Record<string, ToolbarOption> = {
     label: "전체 선택",
     icon: "MousePointer",
     type: "action",
-    action: (editor) => EditorActionInstance(editor)?.selectAll(),
+    action: (editor) => editor.chain().focus().selectAll().run(),
   },
   clearContent: {
     id: "clear-content",
     label: "내용 지우기",
     icon: "Trash",
     type: "action",
-    action: (editor) => EditorActionInstance(editor)?.clearContent(),
+    action: (editor) => editor.chain().focus().clearContent().run(),
   },
   textAlignLeft: {
     id: "text-align-left",
     label: "텍스트 정렬",
     icon: "AlignLeft",
     type: "action",
-    action: (editor) => EditorActionInstance(editor)?.setTextAlign("left"),
+    action: (editor) => editor.chain().focus().setTextAlign("left").run(),
   },
   textAlignCenter: {
     id: "text-align-center",
     label: "텍스트 정렬",
     icon: "AlignCenter",
     type: "action",
-    action: (editor) => EditorActionInstance(editor)?.setTextAlign("center"),
+    action: (editor) => editor.chain().focus().setTextAlign("center").run(),
   },
   textAlignRight: {
     id: "text-align-right",
     label: "텍스트 정렬",
     icon: "AlignRight",
     type: "action",
-    action: (editor) => EditorActionInstance(editor)?.setTextAlign("right"),
+    action: (editor) => editor.chain().focus().setTextAlign("right").run(),
   },
 };

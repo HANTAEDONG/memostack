@@ -1,4 +1,4 @@
-import PostListPage from "@/pages/postListPage";
+import PostList from "@/features/PostList/ui/PostList";
 import { PostSortField, SortOrder } from "@/entities/Post/lib/post.types";
 
 interface DashboardProps {
@@ -15,7 +15,7 @@ export default async function Dashboard({ searchParams }: DashboardProps) {
   const resolvedSearchParams = await searchParams;
   return (
     <div className="w-full">
-      <PostListPage searchParams={resolvedSearchParams} />
+      <PostList searchParams={resolvedSearchParams} />
     </div>
   );
 }

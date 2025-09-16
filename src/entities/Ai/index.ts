@@ -6,7 +6,6 @@ export * from "./lib/ai.types";
 // 서비스 클래스 내보내기
 export { AIService } from "./model/ai.service";
 export { PromptTemplateManager } from "./model/prompt-template.manager";
-export { ConversationManager } from "./model/conversation.manager";
 export { AIConfigManager } from "./lib/ai-config.manager";
 export { SEOAnalyzerService } from "./model/seo-analyzer.service";
 
@@ -31,15 +30,12 @@ export class AIManager {
       const { PromptTemplateManager } = await import(
         "./model/prompt-template.manager"
       );
-      const { ConversationManager } = await import(
-        "./model/conversation.manager"
-      );
-      const { AIConfigManager } = await import("./model/ai-config.manager");
+
+      const { AIConfigManager } = await import("./lib/ai-config.manager");
 
       // 각 매니저 초기화
       this.aiService = new AIService();
       this.promptTemplateManager = new PromptTemplateManager();
-      this.conversationManager = new ConversationManager();
       this.configManager = new AIConfigManager();
 
       console.log("AI 엔티티가 성공적으로 초기화되었습니다.");

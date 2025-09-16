@@ -1,5 +1,33 @@
 import { Editor } from "@tiptap/react";
-import { icons } from "lucide-react";
+
+// 필요한 아이콘들만 정의 (타입 전용)
+type ToolbarIconNames =
+  | "Undo"
+  | "Redo"
+  | "Code"
+  | "Quote"
+  | "Bold"
+  | "Italic"
+  | "Underline"
+  | "Strikethrough"
+  | "Highlighter"
+  | "Link"
+  | "AlignLeft"
+  | "AlignCenter"
+  | "AlignRight"
+  | "AlignJustify"
+  | "Heading1"
+  | "Heading2"
+  | "Heading3"
+  | "ListOrdered"
+  | "List"
+  | "SquareCheck"
+  | "Minus"
+  | "Unlink"
+  | "MousePointer"
+  | "Trash"
+  | "Sun"
+  | "Moon";
 
 export type MarkType =
   | "bold"
@@ -45,7 +73,7 @@ export interface EditorState {
 export interface ToolbarOption {
   id: string;
   label: string;
-  icon: keyof typeof icons;
+  icon: ToolbarIconNames;
   type: "mark" | "node" | "action";
   action: (editor: Editor) => void;
   isActive?: (editor: Editor) => boolean;

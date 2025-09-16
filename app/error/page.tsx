@@ -4,8 +4,9 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { AlertTriangle, Home, RefreshCw } from "lucide-react";
 import { Card } from "@/shared/ui/shadcn/Card";
+import { Suspense } from "react";
 
-export default function ErrorPage() {
+function ErrorContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const errorMessage =
@@ -47,5 +48,19 @@ export default function ErrorPage() {
         </div>
       </Card>
     </div>
+  );
+}
+
+export default function ErrorPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-blue-200">
+          <div className="text-lg">로딩 중...</div>
+        </div>
+      }
+    >
+      <ErrorContent />
+    </Suspense>
   );
 }

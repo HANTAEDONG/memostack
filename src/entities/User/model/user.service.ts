@@ -36,9 +36,7 @@ export class UserService {
 
       return ResponseBuilder.success(user);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "UserService.findByEmail")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -57,9 +55,7 @@ export class UserService {
 
       return ResponseBuilder.success(user);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "UserService.findById")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -92,9 +88,7 @@ export class UserService {
 
       return ResponseBuilder.success(user);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "UserService.create")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -151,9 +145,7 @@ export class UserService {
 
       return createResult;
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "UserService.findOrCreate")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -177,9 +169,7 @@ export class UserService {
 
       return ResponseBuilder.success(user);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "UserService.update")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -195,9 +185,7 @@ export class UserService {
       logger.info("사용자 삭제 완료", { userId: id });
       return ResponseBuilder.success(true);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "UserService.delete")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 
@@ -214,9 +202,7 @@ export class UserService {
       logger.debug("사용자 목록 조회 완료", { count: users.length });
       return ResponseBuilder.success(users);
     } catch (error) {
-      return ResponseBuilder.error(
-        ErrorHandler.handleError(error, "UserService.findAll")
-      );
+      return ResponseBuilder.error(ErrorHandler.handleError(error));
     }
   }
 }
