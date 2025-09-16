@@ -33,10 +33,43 @@ export const useEditPost = (postId?: string) => {
   });
 
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [hasPermission, setHasPermission] = useState<boolean>(true);
+  const [permissionChecked, setPermissionChecked] = useState<boolean>(false);
+
+  // 권한 검사 로직
+  useEffect(() => {
+    if (finalPostId && existingPost && user?.id && !permissionChecked) {
+      const isOwner = existingPost.authorId === user.id;
+      setHasPermission(isOwner);
+      setPermissionChecked(true);
+
+      if (!isOwner) {
+        console.warn("권한 없음: 본인의 게시글이 아닙니다.", {
+          postAuthorId: existingPost.authorId,
+          currentUserId: user.id,
+        });
+      }
+    } else if (finalPostId && !existingPost && !isPostLoading && !postError) {
+      // 포스트가 존재하지 않는 경우 (새 포스트 작성)
+      setHasPermission(true);
+      setPermissionChecked(true);
+    } else if (!finalPostId) {
+      // 새 포스트 작성
+      setHasPermission(true);
+      setPermissionChecked(true);
+    }
+  }, [
+    existingPost,
+    finalPostId,
+    user?.id,
+    isPostLoading,
+    postError,
+    permissionChecked,
+  ]);
 
   // 기존 포스트 데이터가 로드되면 상태 업데이트
   useEffect(() => {
-    if (existingPost) {
+    if (existingPost && hasPermission) {
       setPostData({
         id: existingPost.id,
         title: existingPost.title,
@@ -45,11 +78,11 @@ export const useEditPost = (postId?: string) => {
         category: existingPost.category,
       });
       console.log("기존 포스트 데이터 로딩 성공:", existingPost);
-    } else if (finalPostId && !isPostLoading && !postError) {
+    } else if (finalPostId && !isPostLoading && !postError && hasPermission) {
       // 포스트가 없으면 새 포스트로 초기화
       setPostData((prev) => ({ ...prev, id: finalPostId }));
     }
-  }, [existingPost, finalPostId, isPostLoading, postError]);
+  }, [existingPost, finalPostId, isPostLoading, postError, hasPermission]);
 
   // 사용자 로그인 상태가 변경될 때 authorId 업데이트
   useEffect(() => {
@@ -140,5 +173,7 @@ export const useEditPost = (postId?: string) => {
     isAuthenticated,
     authLoading,
     user,
+    hasPermission,
+    permissionChecked,
   };
 };

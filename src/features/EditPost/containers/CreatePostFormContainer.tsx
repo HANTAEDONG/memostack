@@ -2,6 +2,8 @@
 
 import { useEditPost } from "../model/useEditPost";
 import CreatePostForm from "../ui/CreatePostForm";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 interface CreatePostFormContainerProps {
   postId?: string;
@@ -10,6 +12,7 @@ interface CreatePostFormContainerProps {
 export default function CreatePostFormContainer({
   postId,
 }: CreatePostFormContainerProps) {
+  const router = useRouter();
   const {
     setContent,
     setTitle,
@@ -22,7 +25,17 @@ export default function CreatePostFormContainer({
     loadError,
     isAuthenticated,
     authLoading,
+    hasPermission,
+    permissionChecked,
   } = useEditPost(postId);
+
+  // 권한이 없으면 대시보드로 리다이렉트
+  useEffect(() => {
+    if (permissionChecked && !hasPermission) {
+      alert("본인의 게시글만 편집할 수 있습니다.");
+      router.push("/dashboard");
+    }
+  }, [hasPermission, permissionChecked, router]);
 
   const handleManualSave = async (): Promise<boolean> => {
     return await updateDraft();
@@ -32,6 +45,20 @@ export default function CreatePostFormContainer({
     setTitle("");
     setContent("");
   };
+
+  // 권한이 없거나 로딩 중이면 로딩 표시
+  if (!permissionChecked || !hasPermission) {
+    return (
+      <div className="w-full h-full min-h-screen px-4 max-sm:px-0 bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="text-gray-600">
+            {!permissionChecked ? "권한 확인 중..." : "접근 권한이 없습니다."}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <CreatePostForm
