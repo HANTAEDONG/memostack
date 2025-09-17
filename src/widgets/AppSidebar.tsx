@@ -28,7 +28,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground group-data-[collapsible=icon]:flex-shrink-0">
               <LucideIcon
                 name="BookText"
@@ -39,7 +39,7 @@ export function AppSidebar() {
             <div className="flex flex-col">
               <h1 className="text-xl font-semibold">MemoStack</h1>
             </div>
-          </div>
+          </Link>
           <DarkModeToggle size="sm" />
         </div>
       </SidebarHeader>
