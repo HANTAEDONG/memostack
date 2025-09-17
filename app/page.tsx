@@ -1,23 +1,10 @@
-import { Button } from "@/shared/ui/shadcn/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/shared/ui/shadcn/Card";
 import { Badge } from "@/shared/ui/shadcn/badge";
-import {
-  PenTool,
-  Search,
-  Zap,
-  CheckCircle,
-  BookOpen,
-  Sparkles,
-} from "lucide-react";
-import Link from "next/link";
+import { Sparkles } from "lucide-react";
 import { Metadata } from "next";
 import HeroHeading from "@/shared/ui/HeroHeading";
+import FeaturesGrid from "@/shared/ui/FeaturesGrid";
+import CTAButtons from "@/shared/ui/CTAButtons";
+import { auth } from "@/shared/lib/nextAuth";
 
 export const metadata: Metadata = {
   title: "MemoStack - AI 기반 SEO 최적화 메모 플랫폼",
@@ -73,107 +60,11 @@ export default function Home() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/write">
-              <Button size="lg" className="px-8 py-3 text-lg">
-                <PenTool className="w-5 h-5 mr-2" />글 작성하기
-              </Button>
-            </Link>
-            <Link href="/dashboard">
-              <Button variant="outline" size="lg" className="px-8 py-3 text-lg">
-                <BookOpen className="w-5 h-5 mr-2" />
-                메모 둘러보기
-              </Button>
-            </Link>
-          </div>
+          <CTAButtons />
         </div>
 
         {/* Features Grid */}
-        <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="text-center">
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <PenTool className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-              </div>
-              <CardTitle className="text-xl">스마트 에디터</CardTitle>
-              <CardDescription>
-                직관적이고 강력한 텍스트 에디터로 아이디어를 자유롭게 표현하세요
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  리치 텍스트 편집
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  실시간 미리보기
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  마크다운 지원
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="text-center">
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Search className="w-6 h-6 text-green-600 dark:text-green-400" />
-              </div>
-              <CardTitle className="text-xl">AI SEO 분석</CardTitle>
-              <CardDescription>
-                AI가 실시간으로 SEO 점수를 분석하고 개선 방안을 제안합니다
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  키워드 최적화
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  메타데이터 생성
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  가독성 분석
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="text-center">
-              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Zap className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-              </div>
-              <CardTitle className="text-xl">빠른 작업</CardTitle>
-              <CardDescription>
-                효율적인 워크플로우로 아이디어를 빠르게 정리하고 공유하세요
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  드래프트 저장
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  버전 관리
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  즉시 공유
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
+        <FeaturesGrid />
 
         {/* How it Works */}
         <div className="mt-24 text-center">
