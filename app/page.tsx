@@ -1,4 +1,3 @@
-import { Badge } from "@/shared/ui/shadcn/badge";
 import { Sparkles } from "lucide-react";
 import { Metadata } from "next";
 import HeroHeading from "@/shared/ui/HeroHeading";

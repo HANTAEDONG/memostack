@@ -28,8 +28,42 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <head>
+        <meta name="color-scheme" content="light dark" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function() {
+              try {
+                var stored = localStorage.getItem('theme'); // 'light' | 'dark' | 'system' | null
+                var media = window.matchMedia('(prefers-color-scheme: dark)');
+
+                function apply(theme) {
+                  var useDark = theme === 'dark' || (theme !== 'light' && media.matches);
+                  if (useDark) {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.style.colorScheme = 'dark';
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.style.colorScheme = 'light';
+                  }
+                }
+
+                // 초기 적용: 저장값이 'dark'|'light'가 아니면 시스템 선호를 따름
+                apply(stored);
+
+                // 시스템 모드인 경우에만 시스템 변경을 실시간 반영
+                if (stored !== 'light' && stored !== 'dark') {
+                  try {
+                    media.addEventListener ? media.addEventListener('change', function(){ apply(null); }) : media.addListener(function(){ apply(null); });
+                  } catch (e) {}
+                }
+              } catch (e) {}
+            })();
+          `,
+          }}
+        />
         {/* Critical CSS 인라인 - 렌더링 차단 방지 */}
         <style
           dangerouslySetInnerHTML={{
