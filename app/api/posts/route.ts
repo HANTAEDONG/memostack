@@ -7,6 +7,15 @@ import { PostSortField, SortOrder } from "@/entities/Post/lib/post.types";
 // 게시물 목록 조회
 export async function GET(request: NextRequest) {
   try {
+    // 인증 강제: 비로그인 사용자는 접근 불가
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { message: "로그인이 필요합니다" },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get("limit") || "20");
     const offset = parseInt(searchParams.get("offset") || "0");
@@ -14,7 +23,8 @@ export async function GET(request: NextRequest) {
     const sortOrder = (searchParams.get("sortOrder") as SortOrder) || "desc";
     const category = searchParams.get("category");
     const status = searchParams.get("status");
-    const authorId = searchParams.get("authorId");
+    // authorId는 쿼리스트링으로 받지 않고, 항상 로그인 사용자로 강제
+    const authorId = session.user.id;
     const search = searchParams.get("search");
 
     const options = {

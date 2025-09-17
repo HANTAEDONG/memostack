@@ -3,6 +3,8 @@
 import { useState, Suspense, lazy } from "react";
 import { CreatePostFormProps } from "@/entities/Post/lib/post.types";
 import CategorySelect from "@/entities/Post/ui/CategorySelect";
+import { GoogleOAuthButton } from "@/shared/ui/auth/GoogleOAuthButton";
+import { usePopupAuth } from "@/shared/hooks/usePopupAuth";
 
 const Tiptap = lazy(() => import("@/entities/TextEditor/ui/Tiptap"));
 const SEOAnalysisPanel = lazy(
@@ -25,6 +27,7 @@ export default function CreatePostForm({
   onCategoryChange,
 }: CreatePostFormProps) {
   const [showSEOAnalysis, setShowSEOAnalysis] = useState(false);
+  const { isPopupOpen, signInWithPopup } = usePopupAuth();
 
   // 디바운스는 훅(useEditPost)에서 단일 책임으로 처리
 
@@ -77,9 +80,12 @@ export default function CreatePostForm({
           <div className="text-gray-600 mb-6">
             포스트를 작성하려면 먼저 로그인해주세요.
           </div>
-          <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            로그인하기
-          </button>
+          <div className="max-w-xs mx-auto">
+            <GoogleOAuthButton
+              isPopupOpen={isPopupOpen}
+              onSignIn={() => signInWithPopup({ provider: "google" })}
+            />
+          </div>
         </div>
       </div>
     );

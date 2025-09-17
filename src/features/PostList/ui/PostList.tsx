@@ -1,5 +1,7 @@
 import { DataTable } from "@/shared/ui/data-table";
 import { PostService } from "@/entities/Post";
+import { auth } from "@/shared/lib/nextAuth";
+import LoginWithGoogleCTA from "./_client/LoginWithGoogleCTA";
 import { PostSortField, SortOrder } from "@/entities/Post/lib/post.types";
 import CategoryFilter from "./CategoryFilter";
 
@@ -25,6 +27,21 @@ interface TransformedPost {
 }
 
 const PostList = async ({ searchParams = {} }: PostListProps) => {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return (
+      <div className="w-full h-full min-h-screen flex items-center justify-center bg-background px-2 sm:px-4">
+        <div className="w-full max-w-sm text-center space-y-4">
+          <div className="text-xl">로그인이 필요합니다</div>
+          <div className="text-gray-600">
+            포스트를 조회하려면 먼저 로그인해주세요.
+          </div>
+          {/* 서버 컴포넌트이므로 버튼은 클라이언트 컴포넌트로 대체 렌더 */}
+          <LoginWithGoogleCTA />
+        </div>
+      </div>
+    );
+  }
   const {
     sortBy = "updatedAt",
     sortOrder = "desc",
@@ -42,6 +59,7 @@ const PostList = async ({ searchParams = {} }: PostListProps) => {
         category,
         status,
         search,
+        authorId: session.user.id,
       },
     });
 
