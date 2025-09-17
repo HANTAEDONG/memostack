@@ -11,7 +11,10 @@ export const usePostById = (id?: string) => {
     queryKey: ["post", id],
     queryFn: () => PostAPI.getPostById(id!),
     enabled: !!id,
-    staleTime: 5 * 60 * 1000, // 5분
+    // 목록 → 상세 재진입 시 항상 최신화
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
+    staleTime: 0,
     retry: (failureCount, error) => {
       // 404 에러는 재시도하지 않음
       if (

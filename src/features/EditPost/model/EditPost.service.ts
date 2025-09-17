@@ -11,8 +11,13 @@ export class EditPostService {
       throw new Error("로그인이 필요합니다.");
     }
 
-    if (!data.title?.trim() && !data.content?.trim()) {
-      throw new Error("제목이나 내용을 입력해주세요.");
+    const hasTitle = !!data.title?.trim();
+    const hasContent = !!data.content?.trim();
+    const hasCategory = typeof data.category !== "undefined";
+    const hasStatus = typeof data.status !== "undefined";
+
+    if (!hasTitle && !hasContent && !hasCategory && !hasStatus) {
+      throw new Error("변경할 내용이 없습니다.");
     }
   }
 
@@ -42,11 +47,14 @@ export class EditPostService {
       throw new Error("로그인이 필요합니다.");
     }
 
-    if (!data.title?.trim() || !data.content?.trim()) {
-      throw new Error("제목과 내용을 모두 입력해주세요.");
-    }
+    // 드래프트는 빈 제목과 내용으로 시작할 수 있음
+    const draftData = {
+      title: data.title || "",
+      content: data.content || "",
+      category: data.category || "general",
+    };
 
-    return PostAPI.createDraft(data);
+    return PostAPI.createDraft(draftData);
   }
 
   /**

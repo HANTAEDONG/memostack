@@ -2,12 +2,29 @@ import { Post } from "@prisma/client";
 import { CreatePostData, UpdatePostData } from "./post.types";
 
 export class PostAPI {
+  private static async parseJsonSafe<T = unknown>(
+    response: Response
+  ): Promise<T | null> {
+    try {
+      const text = await response.text();
+      if (!text) return null;
+      return JSON.parse(text) as T;
+    } catch {
+      return null;
+    }
+  }
+
+  private static async getErrorMessage(response: Response, fallback: string) {
+    const data = await this.parseJsonSafe<{ message?: string }>(response);
+    return data?.message || fallback;
+  }
   // 단일 포스트 조회
   static async getPostById(id: string): Promise<Post> {
     const response = await fetch(`/api/posts/${id}`);
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "게시물을 불러오는데 실패했습니다");
+      throw new Error(
+        await this.getErrorMessage(response, "게시물을 불러오는데 실패했습니다")
+      );
     }
     return response.json();
   }
@@ -18,10 +35,12 @@ export class PostAPI {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
+      credentials: "same-origin",
     });
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "업데이트에 실패했습니다");
+      throw new Error(
+        await this.getErrorMessage(response, "업데이트에 실패했습니다")
+      );
     }
     return response.json();
   }
@@ -30,9 +49,11 @@ export class PostAPI {
   static async getDraftPosts(authorId: string): Promise<Post[]> {
     const response = await fetch(`/api/posts/draft?authorId=${authorId}`);
     if (!response.ok) {
-      const error = await response.json();
       throw new Error(
-        error.message || "드래프트 목록을 불러오는데 실패했습니다"
+        await this.getErrorMessage(
+          response,
+          "드래프트 목록을 불러오는데 실패했습니다"
+        )
       );
     }
     return response.json();
@@ -46,8 +67,9 @@ export class PostAPI {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "드래프트 생성에 실패했습니다");
+      throw new Error(
+        await this.getErrorMessage(response, "드래프트 생성에 실패했습니다")
+      );
     }
     return response.json();
   }
@@ -59,8 +81,9 @@ export class PostAPI {
       headers: { "Content-Type": "application/json" },
     });
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "드래프트 발행에 실패했습니다");
+      throw new Error(
+        await this.getErrorMessage(response, "드래프트 발행에 실패했습니다")
+      );
     }
     return response.json();
   }
@@ -71,8 +94,9 @@ export class PostAPI {
       method: "DELETE",
     });
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "드래프트 삭제에 실패했습니다");
+      throw new Error(
+        await this.getErrorMessage(response, "드래프트 삭제에 실패했습니다")
+      );
     }
     return true;
   }

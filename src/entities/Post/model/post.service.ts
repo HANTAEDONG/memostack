@@ -239,15 +239,10 @@ export class PostService {
 
   // ===== 일반 게시물 관련 메서드들 =====
 
-  static async findById(
-    id: string
-  ): Promise<ApiResponse<PostWithAuthor | null>> {
+  static async findById(id: string): Promise<ApiResponse<Post | null>> {
     try {
       const post = await prisma.post.findUnique({
         where: { id },
-        include: {
-          author: true,
-        },
       });
       if (post) {
         logger.debug("게시물 조회 성공", {
