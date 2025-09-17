@@ -1,6 +1,7 @@
 import { DataTable } from "@/shared/ui/data-table";
 import { PostService } from "@/entities/Post";
 import { PostSortField, SortOrder } from "@/entities/Post/lib/post.types";
+import CategoryFilter from "./CategoryFilter";
 
 interface PostListProps {
   searchParams?: {
@@ -67,7 +68,8 @@ const PostList = async ({ searchParams = {} }: PostListProps) => {
     }));
 
     return (
-      <div>
+      <div className="space-y-4">
+        <CategoryFilter />
         <DataTable data={posts} />
       </div>
     );

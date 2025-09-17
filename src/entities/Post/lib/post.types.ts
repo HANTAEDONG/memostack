@@ -1,4 +1,5 @@
 import { Post } from "@prisma/client";
+import { Category } from "./category.types";
 
 // 정렬 관련 타입들
 export type PostSortField = "createdAt" | "updatedAt" | "title" | "category";
@@ -22,13 +23,13 @@ export interface PostQueryOptions {
 export interface CreatePostData {
   title: string;
   content: string;
-  category: string;
+  category: Category;
 }
 
 export interface UpdatePostData {
   title?: string;
   content?: string;
-  category?: string;
+  category?: Category;
   status?: string;
 }
 
@@ -37,6 +38,7 @@ export interface CreatePostFormProps {
   // 데이터
   title: string;
   content: string;
+  category: Category;
   isSaving: boolean;
   isLoading: boolean;
   authLoading: boolean;
@@ -48,6 +50,7 @@ export interface CreatePostFormProps {
   // 이벤트 핸들러
   onTitleChange: (title: string) => void;
   onContentChange: (content: string) => void;
+  onCategoryChange: (category: Category) => void;
   onManualSave: () => Promise<boolean>;
   onClearDraft: () => void;
 }

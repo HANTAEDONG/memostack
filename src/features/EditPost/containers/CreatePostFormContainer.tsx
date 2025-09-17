@@ -4,6 +4,7 @@ import { useEditPost } from "../model/useEditPost";
 import CreatePostForm from "../ui/CreatePostForm";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { Category } from "@/entities/Post/lib/category.types";
 
 interface CreatePostFormContainerProps {
   postId?: string;
@@ -16,6 +17,7 @@ export default function CreatePostFormContainer({
   const {
     setContent,
     setTitle,
+    setCategory,
     postData,
     updateDraft,
     isSaving,
@@ -44,6 +46,7 @@ export default function CreatePostFormContainer({
   const handleClearDraft = () => {
     setTitle("");
     setContent("");
+    setCategory("general");
   };
 
   // 권한이 없거나 로딩 중이면 로딩 표시
@@ -64,6 +67,7 @@ export default function CreatePostFormContainer({
     <CreatePostForm
       title={postData.title}
       content={postData.content}
+      category={postData.category as Category}
       isSaving={isSaving}
       isLoading={isLoading}
       authLoading={authLoading}
@@ -73,6 +77,7 @@ export default function CreatePostFormContainer({
       loadError={loadError || undefined}
       onTitleChange={setTitle}
       onContentChange={setContent}
+      onCategoryChange={setCategory}
       onManualSave={handleManualSave}
       onClearDraft={handleClearDraft}
     />

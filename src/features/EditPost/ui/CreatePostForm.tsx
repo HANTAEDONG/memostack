@@ -3,8 +3,8 @@
 import { useState, useMemo, Suspense, lazy } from "react";
 import { CreatePostFormProps } from "@/entities/Post/lib/post.types";
 import debounce from "@/shared/lib/debounce";
+import CategorySelect from "@/entities/Post/ui/CategorySelect";
 
-// Tiptap과 SEOAnalysisPanel을 동적으로 로드
 const Tiptap = lazy(() => import("@/entities/TextEditor/ui/Tiptap"));
 const SEOAnalysisPanel = lazy(
   () => import("@/entities/TextEditor/ui/SEOAnalysisPanel")
@@ -13,6 +13,7 @@ const SEOAnalysisPanel = lazy(
 export default function CreatePostForm({
   title,
   content,
+  category,
   isSaving,
   isLoading,
   authLoading,
@@ -22,6 +23,7 @@ export default function CreatePostForm({
   loadError,
   onTitleChange,
   onContentChange,
+  onCategoryChange,
 }: CreatePostFormProps) {
   const [showSEOAnalysis, setShowSEOAnalysis] = useState(false);
 
@@ -92,6 +94,18 @@ export default function CreatePostForm({
 
   return (
     <div className="w-full h-full min-h-screen px-2 sm:px-4 bg-background">
+      {/* 카테고리 선택 영역 */}
+      <div className="mb-4 flex flex-col sm:flex-row sm:items-center gap-2">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-gray-700">카테고리:</span>
+          <CategorySelect
+            value={category}
+            onValueChange={onCategoryChange}
+            disabled={isSaving}
+          />
+        </div>
+      </div>
+
       <Suspense fallback={<TiptapFallback />}>
         <Tiptap
           title={title}
