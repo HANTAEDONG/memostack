@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import HeroHeading from "@/shared/ui/HeroHeading";
 import FeaturesGrid from "@/shared/ui/FeaturesGrid";
 import CTAButtons from "@/shared/ui/CTAButtons";
-import { auth } from "@/shared/lib/nextAuth";
+import AnimatedBadge from "@/shared/ui/AnimatedBadge";
 
 export const metadata: Metadata = {
   title: "MemoStack - AI 기반 SEO 최적화 메모 플랫폼",
@@ -37,12 +37,10 @@ export default function Home() {
       <div className="container mx-auto px-4 py-16">
         <div className="text-center space-y-8">
           {/* Badge */}
-          <div className="flex justify-center">
-            <Badge variant="secondary" className="px-4 py-2 text-sm">
-              <Sparkles className="w-4 h-4 mr-2" />
-              AI 기반 SEO 최적화 메모 플랫폼
-            </Badge>
-          </div>
+          <AnimatedBadge className="px-4 py-2 text-sm">
+            <Sparkles className="w-4 h-4 mr-2" />
+            AI 기반 SEO 최적화 메모 플랫폼
+          </AnimatedBadge>
 
           {/* Main Heading */}
           <div className="space-y-4">
