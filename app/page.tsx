@@ -12,13 +12,12 @@ import {
   Search,
   Zap,
   CheckCircle,
-  ArrowRight,
   BookOpen,
-  Target,
   Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
+import HeroHeading from "@/shared/ui/HeroHeading";
 
 export const metadata: Metadata = {
   title: "MemoStack - AI 기반 SEO 최적화 메모 플랫폼",
@@ -60,20 +59,17 @@ export default function Home() {
 
           {/* Main Heading */}
           <div className="space-y-4">
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
+            <HeroHeading className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
               스마트 글쓰기를 위한
               <br />
               <span className="text-blue-600 dark:text-blue-400">
                 빌딩 블록
               </span>
-            </h1>
-            <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
-              깔끔하고 모던한 글쓰기 경험. AI 기반 SEO 분석.
-              <br />
-              <span className="text-slate-500 dark:text-slate-400">
-                모든 콘텐츠 타입 지원. 오픈소스. 영원히 무료.
-              </span>
-            </p>
+              <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+                깔끔하고 모던한 글쓰기 경험. AI 기반 SEO 분석.
+                <br />
+              </p>
+            </HeroHeading>
           </div>
 
           {/* CTA Buttons */}
@@ -219,25 +215,6 @@ export default function Home() {
               </p>
             </div>
           </div>
-        </div>
-
-        {/* Final CTA */}
-        <div className="mt-24 text-center bg-slate-900 dark:bg-slate-800 rounded-2xl p-12 text-white">
-          <h2 className="text-3xl font-bold mb-4">지금 바로 시작해보세요</h2>
-          <p className="text-slate-300 mb-8 max-w-2xl mx-auto">
-            무료로 가입하고 AI 기반 SEO 최적화 기능을 경험해보세요. 첫 번째 글을
-            작성하는데 5분도 걸리지 않습니다.
-          </p>
-          <Link href="/write">
-            <Button
-              size="lg"
-              className="bg-white text-slate-900 hover:bg-slate-100 px-8 py-3 text-lg"
-            >
-              <Target className="w-5 h-5 mr-2" />
-              첫 글 작성하기
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </Link>
         </div>
       </div>
     </div>
