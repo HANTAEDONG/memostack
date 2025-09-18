@@ -45,8 +45,12 @@ export function usePopupAuth(): PopupAuthState {
             clearInterval(checkClosed);
             setIsPopupOpen(false);
             setIsLoading(false);
-            // 세션 업데이트
-            update();
+            // 세션 업데이트 후 새로고침으로 상태 확실히 초기화
+            update().then(() => {
+              setTimeout(() => {
+                window.location.reload();
+              }, 500); // 잠시 대기 후 새로고침
+            });
             resolve(true);
             // 팝업은 콜백 페이지에서 자동으로 닫힘
           } else if (event.data.type === "AUTH_ERROR") {
@@ -54,6 +58,10 @@ export function usePopupAuth(): PopupAuthState {
             setIsPopupOpen(false);
             setIsLoading(false);
             console.error("인증 오류:", event.data.error);
+            // 인증 실패 시에도 새로고침으로 상태 초기화
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
             resolve(false);
             // 팝업은 콜백 페이지에서 자동으로 닫힘
           }

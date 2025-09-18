@@ -45,7 +45,7 @@ export function GoogleOAuthButton({
           </svg>
         </div>
         <span className="text-sm font-medium text-gray-700">
-          {isPopupOpen ? "로그인 중..." : "Google로 계속하기"}
+          {isPopupOpen ? "로그인 중... (새로고침 예정)" : "Google로 계속하기"}
         </span>
       </div>
     </button>
