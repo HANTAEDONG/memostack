@@ -37,7 +37,7 @@ export function usePopupAuth() {
             clearInterval(checkClosed);
             setIsPopupOpen(false);
             setIsLoading(false);
-            // 팝업이 수동으로 닫힌 경우 (사용자가 X 버튼 클릭 등)
+
             resolve(false);
           }
         }, 1000);
@@ -85,10 +85,9 @@ export function usePopupAuth() {
       setIsLoading(true);
 
       try {
-        // NextAuth의 signIn 함수를 사용하여 팝업 URL 생성
         const result = await signIn(provider, {
           redirect: false,
-          callbackUrl: callbackUrl || window.location.href,
+          callbackUrl: callbackUrl || "/auth/callback",
         });
 
         if (result?.url) {
