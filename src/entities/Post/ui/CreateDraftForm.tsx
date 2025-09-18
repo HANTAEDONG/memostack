@@ -17,11 +17,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/ui/shadcn/select";
+import { Category, CATEGORIES } from "../lib/category.types";
 
 export const CreateDraftForm: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState("general");
+  const [category, setCategory] = useState<Category>(CATEGORIES.GENERAL);
   const createDraftMutation = useCreateDraft();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,7 +42,7 @@ export const CreateDraftForm: React.FC = () => {
 
       setTitle("");
       setContent("");
-      setCategory("general");
+      setCategory(CATEGORIES.GENERAL);
       alert("Draft post가 성공적으로 생성되었습니다!");
     } catch (error) {
       console.error("드래프트 생성 실패:", error);
@@ -77,16 +78,29 @@ export const CreateDraftForm: React.FC = () => {
 
           <div className="space-y-2">
             <Label htmlFor="category">카테고리</Label>
-            <Select value={category} onValueChange={setCategory}>
+            <Select
+              value={category}
+              onValueChange={(value) => setCategory(value as Category)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="카테고리를 선택하세요" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="general">일반</SelectItem>
-                <SelectItem value="tech">기술</SelectItem>
-                <SelectItem value="life">일상</SelectItem>
-                <SelectItem value="review">리뷰</SelectItem>
-                <SelectItem value="tutorial">튜토리얼</SelectItem>
+                <SelectItem value={CATEGORIES.GENERAL}>일반</SelectItem>
+                <SelectItem value={CATEGORIES.TECHNOLOGY}>기술</SelectItem>
+                <SelectItem value={CATEGORIES.LIFESTYLE}>
+                  라이프스타일
+                </SelectItem>
+                <SelectItem value={CATEGORIES.TRAVEL}>여행</SelectItem>
+                <SelectItem value={CATEGORIES.FOOD}>음식</SelectItem>
+                <SelectItem value={CATEGORIES.BOOKS}>책</SelectItem>
+                <SelectItem value={CATEGORIES.MOVIES}>영화</SelectItem>
+                <SelectItem value={CATEGORIES.MUSIC}>음악</SelectItem>
+                <SelectItem value={CATEGORIES.SPORTS}>스포츠</SelectItem>
+                <SelectItem value={CATEGORIES.BUSINESS}>비즈니스</SelectItem>
+                <SelectItem value={CATEGORIES.EDUCATION}>교육</SelectItem>
+                <SelectItem value={CATEGORIES.HEALTH}>건강</SelectItem>
+                <SelectItem value={CATEGORIES.OTHER}>기타</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -121,7 +135,7 @@ export const CreateDraftForm: React.FC = () => {
               onClick={() => {
                 setTitle("");
                 setContent("");
-                setCategory("general");
+                setCategory(CATEGORIES.GENERAL);
               }}
               className="flex-1"
             >
