@@ -5,7 +5,7 @@ import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { usePostById, useUpdatePost } from "@/entities/Post/model/usePostQuery";
 import { useAuth } from "@/entities/Auth";
-import { EditPostService } from "./editPost.service";
+import { EditPostService } from "@/features/EditPost/model/editPost.service";
 import { Category } from "@/entities/Post/lib/category.types";
 import debounce from "@/shared/lib/debounce";
 
