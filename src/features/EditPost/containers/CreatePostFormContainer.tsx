@@ -1,10 +1,10 @@
 "use client";
 
-import { useEditPost } from "../model/useEditPost";
 import CreatePostForm from "../ui/CreatePostForm";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Category } from "@/entities/Post/lib/category.types";
+import { useEditPost } from "../model/useEditPost";
 
 interface CreatePostFormContainerProps {
   postId?: string;
