@@ -19,9 +19,15 @@ const ToolbarDropdown = ({ options, editor }: ToolbarDropdownProps) => {
     top: 10,
     left: 0,
   });
-  const [selected, setSelected] = useState<React.ReactNode>(
-    <LucideIcon name={options[0]?.icon || "Heading"} size={20} />
-  );
+  // 현재 활성 상태에 따라 선택된 옵션 업데이트
+  const getActiveOption = () => {
+    const activeOption = options.find(
+      (option) => option.isActive && option.isActive(editor)
+    );
+    return activeOption || options[0];
+  };
+
+  const activeOption = getActiveOption();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useOutsideClick(dropdownRef, () => setIsOpen(false));
@@ -48,7 +54,7 @@ const ToolbarDropdown = ({ options, editor }: ToolbarDropdownProps) => {
         className="flex gap-0.5 text-[16px] h-8 py-2 items-center hover:bg-gray-200 rounded-md px-1 cursor-pointer"
         onClick={handleToggle}
       >
-        {selected}
+        <LucideIcon name={activeOption.icon} size={20} />
         <ChevronDown size={16} style={{ color: "rgb(14, 14, 17)" }} />
       </div>
       {isOpen &&
@@ -66,8 +72,8 @@ const ToolbarDropdown = ({ options, editor }: ToolbarDropdownProps) => {
                 key={option.key}
                 onClick={() => {
                   console.log("option: ", option);
-                  setSelected(option.element);
                   option.action();
+                  setIsOpen(false);
                 }}
               >
                 {option.element} {option.key}

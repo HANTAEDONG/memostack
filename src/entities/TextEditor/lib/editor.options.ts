@@ -47,14 +47,14 @@ export const listOptions: ToolbarOption[] = [
     action: (editor) => editor.chain().focus().toggleBulletList().run(),
     isActive: (editor) => editor.isActive("bulletList"),
   },
-  {
-    id: "task-list",
-    label: "할 일 목록",
-    icon: "SquareCheck",
-    type: "node",
-    action: (editor) => editor.chain().focus().toggleTaskList().run(),
-    isActive: (editor) => editor.isActive("taskList"),
-  },
+  // {
+  //   id: "task-list",
+  //   label: "할 일 목록",
+  //   icon: "SquareCheck",
+  //   type: "node",
+  //   action: (editor) => editor.chain().focus().toggleTaskList().run(),
+  //   isActive: (editor) => editor.isActive("taskList"),
+  // },
 ];
 
 export const toolbarOptions: Record<string, ToolbarOption> = {

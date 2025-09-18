@@ -2,6 +2,8 @@ import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
+// import TaskList from "@tiptap/extension-task-list";
+// import TaskListItem from "@tiptap/extension-task-item";
 import { Editor } from "@tiptap/react";
 
 const EditorOptions = {
@@ -30,6 +32,14 @@ const EditorOptions = {
     TextAlign.configure({
       types: ["heading", "paragraph"],
     }),
+    // TaskList.configure({
+    //   HTMLAttributes: {
+    //     class: "task-list",
+    //   },
+    // }),
+    // TaskListItem.configure({
+    //   nested: true,
+    // }),
     Link.configure({
       openOnClick: false,
       autolink: true,

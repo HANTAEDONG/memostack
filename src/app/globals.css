@@ -75,6 +75,17 @@
   .prose li {
     @apply mb-1;
   }
+
+  /* TaskList 스타일 */
+  .prose .task-list {
+    @apply list-none pl-0;
+  }
+  .prose .task-list-item {
+    @apply flex items-start gap-2 mb-1;
+  }
+  .prose .task-list-item input[type="checkbox"] {
+    @apply mt-1;
+  }
   .prose blockquote {
     @apply border-l-4 border-gray-300 pl-4 italic;
   }
