@@ -74,6 +74,12 @@ importers:
       '@tiptap/extension-link':
         specifier: ^3.0.8
         version: 3.0.8(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))(@tiptap/pm@3.0.7)
+      '@tiptap/extension-task-item':
+        specifier: ^3.4.4
+        version: 3.4.4(@tiptap/extension-list@3.0.7(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))(@tiptap/pm@3.0.7))
+      '@tiptap/extension-task-list':
+        specifier: ^3.4.4
+        version: 3.4.4(@tiptap/extension-list@3.0.7(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))(@tiptap/pm@3.0.7))
       '@tiptap/extension-text-align':
         specifier: ^3.0.7
         version: 3.0.7(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))
@@ -1539,6 +1545,16 @@ packages:
     resolution: {integrity: sha512-WUCd5CMgS6pg0ZGKXsaxVrnEvO/h6XUehebL0yggAsRKSoGERInR2iLfhU4p1f4zk0cD3ydNLJdqZu0H/MIABw==}
     peerDependencies:
       '@tiptap/core': ^3.0.7
+
+  '@tiptap/extension-task-item@3.4.4':
+    resolution: {integrity: sha512-i2WUUHV5pnfU7xvzUWlECuIj7ZQNKCe7+1HUf6ktTmmWDNpJirRHwLrNPVWShfBOJX/fFMif5mQqZ3/91rODbQ==}
+    peerDependencies:
+      '@tiptap/extension-list': ^3.4.4
+
+  '@tiptap/extension-task-list@3.4.4':
+    resolution: {integrity: sha512-wvB1P/MGD98P36dJMMnY+6bN2MPAUPZTpAPEFsPba6pMhnXOAYRkBqibt4WQcGdiSv6aGlnZexW3Tj8uq/FKbg==}
+    peerDependencies:
+      '@tiptap/extension-list': ^3.4.4
 
   '@tiptap/extension-text-align@3.0.7':
     resolution: {integrity: sha512-3XywI2+dvb5IIO5NnZqyoXrRnikGyCIN7wWymTI7eqD213Ovs19/sfbW5kXLPsBYiNBb12nbG6pmPhr21mPvoA==}
@@ -5153,6 +5169,14 @@ snapshots:
   '@tiptap/extension-strike@3.0.7(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))':
     dependencies:
       '@tiptap/core': 3.0.7(@tiptap/pm@3.0.7)
+
+  '@tiptap/extension-task-item@3.4.4(@tiptap/extension-list@3.0.7(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))(@tiptap/pm@3.0.7))':
+    dependencies:
+      '@tiptap/extension-list': 3.0.7(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))(@tiptap/pm@3.0.7)
+
+  '@tiptap/extension-task-list@3.4.4(@tiptap/extension-list@3.0.7(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))(@tiptap/pm@3.0.7))':
+    dependencies:
+      '@tiptap/extension-list': 3.0.7(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))(@tiptap/pm@3.0.7)
 
   '@tiptap/extension-text-align@3.0.7(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))':
     dependencies:
