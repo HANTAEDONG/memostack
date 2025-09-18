@@ -112,12 +112,12 @@ export function usePopupAuth(): PopupAuthState {
     setIsLoading(true);
     try {
       await signOut({ redirect: false });
-      // 로그아웃 후 새로고침으로 상태 초기화
-      window.location.reload();
+      // 로그아웃 후 랜딩페이지로 리다이렉션
+      window.location.href = "/";
     } catch (error) {
       console.error("로그아웃 오류:", error);
-      // 에러가 발생해도 새로고침으로 상태 초기화
-      window.location.reload();
+      // 에러가 발생해도 랜딩페이지로 리다이렉션
+      window.location.href = "/";
     }
   }, []);
 
