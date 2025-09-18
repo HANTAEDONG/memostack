@@ -1,8 +1,7 @@
 "use client";
 
-import { usePopupAuth } from "@/shared/hooks/usePopupAuth";
+import { usePopupAuth } from "../model/usePopupAuth";
 import { AuthLoadingButton } from "./AuthLoadingButton";
-
 import { UserProfileDropdown } from "./UserProfileDropdown";
 import { LoginButton } from "./LoginButton";
 

@@ -2,15 +2,9 @@
 
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
+import { AuthUser, AuthState } from "../lib/auth.types";
 
-export interface AuthUser {
-  id: string;
-  email?: string | null;
-  name?: string | null;
-  image?: string | null;
-}
-
-export const useAuth = () => {
+export const useAuth = (): AuthState => {
   const { data: session, status } = useSession();
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);

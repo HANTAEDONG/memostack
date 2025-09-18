@@ -3,8 +3,7 @@
 import { useState, Suspense, lazy } from "react";
 import { CreatePostFormProps } from "@/entities/Post/lib/post.types";
 import CategorySelect from "@/entities/Post/ui/CategorySelect";
-import { GoogleOAuthButton } from "@/shared/ui/auth/GoogleOAuthButton";
-import { usePopupAuth } from "@/shared/hooks/usePopupAuth";
+import { GoogleOAuthButton, usePopupAuth } from "@/entities/Auth";
 
 const Tiptap = lazy(() => import("@/entities/TextEditor/ui/Tiptap"));
 const SEOAnalysisPanel = lazy(

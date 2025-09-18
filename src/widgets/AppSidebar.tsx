@@ -12,13 +12,12 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
-  SidebarInput,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/shared/ui/shadcn/sidebar";
 import LucideIcon from "@/shared/ui/Icon/LucideIcon";
-import { AuthButton } from "@/shared/ui/auth/AuthButton";
+import { AuthButton } from "@/entities/Auth";
 import DarkModeToggle from "@/shared/ui/DarkModeToggle";
 
 export function AppSidebar() {

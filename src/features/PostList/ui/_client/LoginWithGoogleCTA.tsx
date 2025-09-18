@@ -1,7 +1,6 @@
 "use client";
 
-import { GoogleOAuthButton } from "@/shared/ui/auth/GoogleOAuthButton";
-import { usePopupAuth } from "@/shared/hooks/usePopupAuth";
+import { GoogleOAuthButton, usePopupAuth } from "@/entities/Auth";
 
 export default function LoginWithGoogleCTA() {
   const { isPopupOpen, signInWithPopup } = usePopupAuth();

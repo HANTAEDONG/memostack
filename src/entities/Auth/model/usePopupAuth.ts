@@ -3,14 +3,9 @@
 import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useCallback, useState } from "react";
+import { PopupAuthOptions, PopupAuthState } from "../lib/auth.types";
 
-interface PopupAuthOptions {
-  provider?: string;
-  callbackUrl?: string;
-  redirect?: boolean;
-}
-
-export function usePopupAuth() {
+export function usePopupAuth(): PopupAuthState {
   const { data: session, status, update } = useSession();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -118,9 +113,10 @@ export function usePopupAuth() {
 
   return {
     session,
-    status,
     isLoading: isLoading || status === "loading",
     isPopupOpen,
+    user: session?.user || null,
+    isAuthenticated: !!session?.user,
     signInWithPopup,
     signOutWithPopup,
   };
