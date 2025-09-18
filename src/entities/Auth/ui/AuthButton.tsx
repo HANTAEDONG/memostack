@@ -6,16 +6,10 @@ import { UserProfileDropdown } from "./UserProfileDropdown";
 import { LoginButton } from "./LoginButton";
 
 export function AuthButton() {
-  const {
-    session,
-    status,
-    isLoading,
-    isPopupOpen,
-    signInWithPopup,
-    signOutWithPopup,
-  } = usePopupAuth();
+  const { session, isLoading, isPopupOpen, signInWithPopup, signOutWithPopup } =
+    usePopupAuth();
 
-  if (status === "loading" || isLoading) {
+  if (isLoading) {
     return <AuthLoadingButton />;
   }
 
@@ -29,6 +23,10 @@ export function AuthButton() {
   }
 
   return (
-    <UserProfileDropdown user={session.user} onSignOut={signOutWithPopup} />
+    <UserProfileDropdown
+      user={session.user}
+      onSignOut={signOutWithPopup}
+      isLoading={isLoading}
+    />
   );
 }

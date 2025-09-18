@@ -13,4 +13,5 @@ export { AuthButton } from "./ui/AuthButton";
 export { AuthLoadingButton } from "./ui/AuthLoadingButton";
 export { GoogleOAuthButton } from "./ui/GoogleOAuthButton";
 export { LoginButton } from "./ui/LoginButton";
+export { LogoutConfirmModal } from "./ui/LogoutConfirmModal";
 export { UserProfileDropdown } from "./ui/UserProfileDropdown";
