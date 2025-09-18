@@ -20,6 +20,7 @@ export default function CreatePostFormContainer({
     setCategory,
     postData,
     updateDraft,
+    publishNow,
     isSaving,
     lastSaved,
     saveError,
@@ -47,6 +48,15 @@ export default function CreatePostFormContainer({
     setTitle("");
     setContent("");
     setCategory("general");
+  };
+
+  const handlePublish = async () => {
+    const ok = await publishNow();
+    if (ok) {
+      alert("작성 완료되었습니다.");
+      // 대시보드로 이동
+      router.push("/dashboard");
+    }
   };
 
   // 권한이 없거나 로딩 중이면 로딩 표시
@@ -80,6 +90,7 @@ export default function CreatePostFormContainer({
       onCategoryChange={setCategory}
       onManualSave={handleManualSave}
       onClearDraft={handleClearDraft}
+      onPublish={handlePublish}
     />
   );
 }

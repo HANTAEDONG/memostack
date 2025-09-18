@@ -24,6 +24,7 @@ export default function CreatePostForm({
   onTitleChange,
   onContentChange,
   onCategoryChange,
+  onPublish,
 }: CreatePostFormProps) {
   const [showSEOAnalysis, setShowSEOAnalysis] = useState(false);
   const { isPopupOpen, signInWithPopup } = usePopupAuth();
@@ -124,12 +125,20 @@ export default function CreatePostForm({
             </div>
           )}
         </div>
-        <button
-          onClick={() => setShowSEOAnalysis(!showSEOAnalysis)}
-          className="px-3 py-2 sm:px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs sm:text-sm w-full sm:w-auto"
-        >
-          {showSEOAnalysis ? "SEO 분석 숨기기" : "SEO 분석"}
-        </button>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <button
+            onClick={() => setShowSEOAnalysis(!showSEOAnalysis)}
+            className="px-3 py-2 sm:px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs sm:text-sm w-full sm:w-auto"
+          >
+            {showSEOAnalysis ? "SEO 분석 숨기기" : "SEO 분석"}
+          </button>
+          <button
+            onClick={onPublish}
+            className="px-3 py-2 sm:px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm w-full sm:w-auto"
+          >
+            작성 완료
+          </button>
+        </div>
       </div>
 
       {showSEOAnalysis && (

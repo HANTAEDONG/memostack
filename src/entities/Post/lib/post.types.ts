@@ -53,6 +53,7 @@ export interface CreatePostFormProps {
   onCategoryChange: (category: Category) => void;
   onManualSave: () => Promise<boolean>;
   onClearDraft: () => void;
+  onPublish: () => void;
 }
 
 // 비즈니스 로직 관련 타입들

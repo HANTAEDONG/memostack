@@ -88,7 +88,6 @@ export const schema = z.object({
   id: z.string(),
   title: z.string(),
   content: z.string(),
-  authorId: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
   category: z.string(),
@@ -198,13 +197,6 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     ),
     enableSorting: true,
     sortingFn: "alphanumeric",
-  },
-  {
-    accessorKey: "authorId",
-    header: "Author",
-    cell: ({ row }) => (
-      <div className="w-32 truncate text-sm">{row.original.authorId}</div>
-    ),
   },
   {
     accessorKey: "createdAt",

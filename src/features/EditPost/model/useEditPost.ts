@@ -329,12 +329,25 @@ export const useEditPost = (postId?: string) => {
     debouncedAutoSave();
   };
 
+  const publishNow = useCallback(async (): Promise<boolean> => {
+    if (!user?.id) return false;
+    if (!finalPostId) return false;
+    try {
+      await EditPostService.publishDraft(finalPostId, user.id);
+      return true;
+    } catch (error) {
+      console.error("드래프트 발행 실패:", error);
+      return false;
+    }
+  }, [finalPostId, user?.id]);
+
   return {
     postData,
     setTitle,
     setContent,
     setCategory,
     updateDraft,
+    publishNow,
     isSaving: updatePostMutation.isPending,
     lastSaved,
     saveError: updatePostMutation.error?.message || null,

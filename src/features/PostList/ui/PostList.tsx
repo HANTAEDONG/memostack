@@ -19,7 +19,6 @@ interface TransformedPost {
   id: string;
   title: string;
   content: string;
-  authorId: string;
   createdAt: string;
   updatedAt: string;
   category: string;
@@ -78,7 +77,6 @@ const PostList = async ({ searchParams = {} }: PostListProps) => {
       id: post.id,
       title: post.title,
       content: post.content,
-      authorId: post.authorId,
       createdAt: post.createdAt.toISOString(),
       updatedAt: post.updatedAt.toISOString(),
       category: post.category,
