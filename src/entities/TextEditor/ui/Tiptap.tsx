@@ -36,7 +36,7 @@ const Tiptap = ({
     }
   }, [content, editor]);
 
-  const { isDarkMode, toggleDarkMode } = useToggleDarkmode();
+  const { isDarkMode, setTheme } = useToggleDarkmode();
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTitle = e.target.value;
@@ -49,7 +49,7 @@ const Tiptap = ({
         <ToolbarComponent
           editor={editor}
           isDarkMode={isDarkMode}
-          toggleDarkMode={toggleDarkMode}
+          setTheme={setTheme}
         />
       )}
       <div className="w-full h-14 pt-4 px-3 sm:px-5 focus:outline-none">

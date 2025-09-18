@@ -13,14 +13,10 @@ import { EditorState } from "../lib/editor.types";
 interface ToolbarProps {
   editor: Editor;
   isDarkMode: boolean;
-  toggleDarkMode: () => void;
+  setTheme: (theme: "light" | "dark" | "system") => void;
 }
 
-const ToolbarComponent = ({
-  editor,
-  isDarkMode,
-  toggleDarkMode,
-}: ToolbarProps) => {
+const ToolbarComponent = ({ editor, isDarkMode, setTheme }: ToolbarProps) => {
   const editorState = useEditorState({
     editor,
     selector: ({ editor }: { editor: Editor }) =>
@@ -195,7 +191,7 @@ const ToolbarComponent = ({
           <Toolbar.Icon name="AlignJustify" />
         </Toolbar.Button>
       </div>
-      <Toolbar.Button onClick={toggleDarkMode}>
+      <Toolbar.Button onClick={() => setTheme(isDarkMode ? "light" : "dark")}>
         <Toolbar.Icon name={isDarkMode ? "Sun" : "Moon"} />
       </Toolbar.Button>
     </Toolbar.Container>
