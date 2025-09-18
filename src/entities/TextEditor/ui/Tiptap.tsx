@@ -52,20 +52,20 @@ const Tiptap = ({
           setTheme={setTheme}
         />
       )}
-      <div className="w-full h-14 pt-4 px-3 sm:px-5 focus:outline-none">
+      <div className="w-full h-16 pt-4 px-3 sm:px-5 focus:outline-none">
         <Input
           name="title"
           id="title"
           placeholder="제목"
           value={title}
-          className="w-full border-none focus:outline-none h-10 px-0 py-0 font-bold placeholder:text-gray-400 text-xl sm:text-3xl"
+          className="w-full border-none focus:outline-none h-12 px-0 py-0 font-bold placeholder:text-gray-400 !text-3xl sm:!text-4xl"
           onChange={handleTitleChange}
         />
       </div>
       <EditorContent
         id="editor"
         editor={editor}
-        className="w-full h-full flex-1 p-0 focus:outline-none [&_.ProseMirror]:min-h-[calc(100vh-300px)] [&_.ProseMirror]:p-3 sm:[&_.ProseMirror]:p-5"
+        className="w-full h-full flex-1 p-0 focus:outline-none [&_.ProseMirror]:min-h-[calc(100vh-300px)] [&_.ProseMirror]:px-0 sm:[&_.ProseMirror]:px-0 [&_.ProseMirror]:py-0 sm:[&_.ProseMirror]:py-0"
       />
     </div>
   );

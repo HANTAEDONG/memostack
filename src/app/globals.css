@@ -39,6 +39,18 @@
 }
 
 @layer components {
+  .editor-title {
+    font-size: 1.875rem; /* text-3xl */
+    line-height: 2.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .editor-title {
+      font-size: 2.25rem; /* text-4xl */
+      line-height: 2.5rem;
+    }
+  }
+
   .prose {
     @apply text-gray-900 dark:text-white;
   }
