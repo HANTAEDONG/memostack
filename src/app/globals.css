@@ -17,7 +17,24 @@
   }
 
   body.dark {
-    background-color: oklch(14.5% 0 0);
+    background-color: #0f172a; /* slate-900 */
+  }
+
+  /* 다크 모드에서 사이드바와 배경색 통일 */
+  .dark {
+    --sidebar: #0f172a; /* slate-900 */
+    --sidebar-foreground: #f8fafc; /* slate-50 */
+    --sidebar-accent: #1e293b; /* slate-800 */
+    --sidebar-accent-foreground: #f8fafc; /* slate-50 */
+    --sidebar-border: #334155; /* slate-700 */
+    --sidebar-ring: #475569; /* slate-600 */
+    --background: #0f172a; /* slate-900 */
+    --border: #334155; /* slate-700 */
+  }
+
+  .dark [data-slot="card"] {
+    border-color: #334155; /* slate-700 */
+    border-width: 1px;
   }
 }
 
