@@ -1,10 +1,12 @@
 import OpenAI from "openai";
 
 // OpenAI 클라이언트 인스턴스 생성
-export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  organization: process.env.OPENAI_ORGANIZATION, // 선택사항
-});
+export const openai = process.env.OPENAI_API_KEY
+  ? new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+      organization: process.env.OPENAI_ORGANIZATION, // 선택사항
+    })
+  : null;
 
 // 기본 모델 설정
 export const DEFAULT_MODEL = "gpt-4o-mini" as const;
@@ -27,6 +29,10 @@ export async function createChatCompletion(
   options?: Partial<OpenAI.Chat.Completions.ChatCompletionCreateParams>
 ): Promise<OpenAIResponse> {
   try {
+    if (!openai) {
+      throw new Error("OpenAI API 키가 설정되지 않았습니다.");
+    }
+
     const completion = await openai.chat.completions.create({
       model,
       messages,
@@ -60,6 +66,10 @@ export async function createCompletion(
   options?: Partial<OpenAI.Completions.CompletionCreateParams>
 ): Promise<OpenAIResponse> {
   try {
+    if (!openai) {
+      throw new Error("OpenAI API 키가 설정되지 않았습니다.");
+    }
+
     const completion = await openai.completions.create({
       model,
       prompt,

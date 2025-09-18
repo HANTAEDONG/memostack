@@ -2,12 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 // OpenAI 클라이언트 초기화 (서버 사이드에서만)
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const openai = process.env.OPENAI_API_KEY
+  ? new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  : null;
 
 export async function POST(request: NextRequest) {
   try {
+    // OpenAI API 키가 없으면 에러 반환
+    if (!openai) {
+      return NextResponse.json(
+        { error: "OpenAI API 키가 설정되지 않았습니다." },
+        { status: 500 }
+      );
+    }
+
     const { title, content, targetKeywords = [] } = await request.json();
     if (!title || !content) {
       return NextResponse.json(
