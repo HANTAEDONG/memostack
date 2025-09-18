@@ -1,6 +1,16 @@
 "use client";
 
 import { useState, Suspense, lazy } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/shared/ui/shadcn/alert-dialog";
 import { CreatePostFormProps } from "@/entities/Post/lib/post.types";
 import CategorySelect from "@/entities/Post/ui/CategorySelect";
 import { GoogleOAuthButton, usePopupAuth } from "@/entities/Auth";
@@ -28,6 +38,7 @@ export default function CreatePostForm({
 }: CreatePostFormProps) {
   const [showSEOAnalysis, setShowSEOAnalysis] = useState(false);
   const { isPopupOpen, signInWithPopup } = usePopupAuth();
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   // 디바운스는 훅(useEditPost)에서 단일 책임으로 처리
 
@@ -133,13 +144,37 @@ export default function CreatePostForm({
             {showSEOAnalysis ? "SEO 분석 숨기기" : "SEO 분석"}
           </button>
           <button
-            onClick={onPublish}
+            onClick={() => setConfirmOpen(true)}
             className="px-3 py-2 sm:px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm w-full sm:w-auto"
           >
             작성 완료
           </button>
         </div>
       </div>
+
+      {/* 작성 완료 확인 모달 */}
+      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>작성 완료 처리</AlertDialogTitle>
+            <AlertDialogDescription>
+              글을 완료 상태로 변경합니다. 이후에는 목록에서 완료 상태로
+              표시됩니다. 진행하시겠습니까?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>취소</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setConfirmOpen(false);
+                onPublish();
+              }}
+            >
+              확인
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {showSEOAnalysis && (
         <div className="mt-4 sm:mt-6">
