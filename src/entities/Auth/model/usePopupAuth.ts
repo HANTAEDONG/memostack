@@ -6,7 +6,7 @@ import { useCallback, useState } from "react";
 import { PopupAuthOptions, PopupAuthState } from "../lib/auth.types";
 
 export function usePopupAuth(): PopupAuthState {
-  const { data: session, status, update } = useSession();
+  const { data: session, update } = useSession();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -104,16 +104,18 @@ export function usePopupAuth(): PopupAuthState {
     setIsLoading(true);
     try {
       await signOut({ redirect: false });
-      setIsLoading(false);
+      // 로그아웃 후 새로고침으로 상태 초기화
+      window.location.reload();
     } catch (error) {
       console.error("로그아웃 오류:", error);
-      setIsLoading(false);
+      // 에러가 발생해도 새로고침으로 상태 초기화
+      window.location.reload();
     }
   }, []);
 
   return {
     session,
-    isLoading: isLoading || status === "loading",
+    isLoading: isLoading,
     isPopupOpen,
     user: session?.user || null,
     isAuthenticated: !!session?.user,

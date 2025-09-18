@@ -35,6 +35,10 @@ export function LogoutConfirmModal({
           </AlertDialogTitle>
           <AlertDialogDescription className="text-left">
             정말로 로그아웃하시겠습니까? 로그아웃 후에는 다시 로그인해야 합니다.
+            <br />
+            <span className="text-sm text-blue-600">
+              로그아웃 후 페이지가 새로고침됩니다.
+            </span>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="gap-2">

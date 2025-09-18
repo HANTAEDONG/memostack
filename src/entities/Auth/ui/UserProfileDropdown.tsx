@@ -35,9 +35,14 @@ export function UserProfileDropdown({
     setIsLogoutModalOpen(true);
   };
 
-  const handleLogoutConfirm = () => {
-    onSignOut();
-    setIsLogoutModalOpen(false);
+  const handleLogoutConfirm = async () => {
+    try {
+      await onSignOut();
+      setIsLogoutModalOpen(false);
+    } catch (error) {
+      console.error("로그아웃 처리 중 오류:", error);
+      setIsLogoutModalOpen(false);
+    }
   };
 
   const handleLogoutCancel = () => {
