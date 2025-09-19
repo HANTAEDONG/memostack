@@ -16,11 +16,24 @@ export const metadata: Metadata = {
     description: "깔끔하고 모던한 글쓰기 경험. AI 기반 SEO 분석.",
     type: "website",
     locale: "ko_KR",
+    url: "https://memostack-snowy.vercel.app",
+    siteName: "MemoStack",
   },
   twitter: {
     card: "summary_large_image",
     title: "MemoStack - AI 기반 SEO 최적화 메모 플랫폼",
     description: "깔끔하고 모던한 글쓰기 경험. AI 기반 SEO 분석.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   other: {
     "font-display": "swap",
@@ -30,81 +43,109 @@ export const metadata: Metadata = {
 export const dynamic = "force-static";
 
 export default function Home() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br ">
-      {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center space-y-8">
-          {/* Badge */}
-          <AnimatedBadge className="px-4 py-2 text-sm">
-            <Sparkles className="w-4 h-4 mr-2" />
-            AI 기반 SEO 최적화 메모 플랫폼
-          </AnimatedBadge>
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "MemoStack",
+    description: "AI 기반 SEO 최적화 메모 플랫폼",
+    url: "https://memostack-snowy.vercel.app",
+    applicationCategory: "ProductivityApplication",
+    operatingSystem: "Web Browser",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "KRW",
+    },
+    featureList: [
+      "AI 기반 SEO 분석",
+      "리치 텍스트 에디터",
+      "실시간 미리보기",
+      "드래프트 저장",
+      "버전 관리",
+    ],
+  };
 
-          {/* Main Heading */}
-          <div className="space-y-4">
-            <HeroHeading className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
-              스마트 글쓰기를 위한
-              <br />
-              <span className="text-blue-600 dark:text-blue-400">
-                빌딩 블록
-              </span>
-              <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
-                깔끔하고 모던한 글쓰기 경험. AI 기반 SEO 분석.
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <div className="min-h-screen bg-gradient-to-br ">
+        {/* Hero Section */}
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center space-y-8">
+            {/* Badge */}
+            <AnimatedBadge className="px-4 py-2 text-sm">
+              <Sparkles className="w-4 h-4 mr-2" />
+              AI 기반 SEO 최적화 메모 플랫폼
+            </AnimatedBadge>
+
+            {/* Main Heading */}
+            <div className="space-y-4">
+              <HeroHeading className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
+                스마트 글쓰기를 위한
                 <br />
-              </p>
-            </HeroHeading>
+                <span className="text-blue-600 dark:text-blue-400">
+                  빌딩 블록
+                </span>
+                <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+                  깔끔하고 모던한 글쓰기 경험. AI 기반 SEO 분석.
+                  <br />
+                </p>
+              </HeroHeading>
+            </div>
+
+            {/* CTA Buttons */}
+            <CTAButtons />
           </div>
 
-          {/* CTA Buttons */}
-          <CTAButtons />
-        </div>
+          {/* Features Grid */}
+          <FeaturesGrid />
 
-        {/* Features Grid */}
-        <FeaturesGrid />
+          {/* How it Works */}
+          <div className="mt-24 text-center">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+              간단한 3단계로 시작하세요
+            </h2>
+            <p className="text-slate-600 dark:text-slate-300 mb-12">
+              복잡한 설정 없이 바로 글을 작성하고 SEO를 최적화하세요
+            </p>
 
-        {/* How it Works */}
-        <div className="mt-24 text-center">
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-            간단한 3단계로 시작하세요
-          </h2>
-          <p className="text-slate-600 dark:text-slate-300 mb-12">
-            복잡한 설정 없이 바로 글을 작성하고 SEO를 최적화하세요
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="space-y-4">
-              <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto text-xl font-bold">
-                1
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="space-y-4">
+                <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto text-xl font-bold">
+                  1
+                </div>
+                <h3 className="text-xl font-semibold">글 작성</h3>
+                <p className="text-slate-600 dark:text-slate-300">
+                  직관적인 에디터로 아이디어를 자유롭게 작성하세요
+                </p>
               </div>
-              <h3 className="text-xl font-semibold">글 작성</h3>
-              <p className="text-slate-600 dark:text-slate-300">
-                직관적인 에디터로 아이디어를 자유롭게 작성하세요
-              </p>
-            </div>
 
-            <div className="space-y-4">
-              <div className="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto text-xl font-bold">
-                2
+              <div className="space-y-4">
+                <div className="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto text-xl font-bold">
+                  2
+                </div>
+                <h3 className="text-xl font-semibold">SEO 분석</h3>
+                <p className="text-slate-600 dark:text-slate-300">
+                  AI가 실시간으로 SEO 점수를 분석하고 개선점을 제안합니다
+                </p>
               </div>
-              <h3 className="text-xl font-semibold">SEO 분석</h3>
-              <p className="text-slate-600 dark:text-slate-300">
-                AI가 실시간으로 SEO 점수를 분석하고 개선점을 제안합니다
-              </p>
-            </div>
 
-            <div className="space-y-4">
-              <div className="w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto text-xl font-bold">
-                3
+              <div className="space-y-4">
+                <div className="w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto text-xl font-bold">
+                  3
+                </div>
+                <h3 className="text-xl font-semibold">최적화 완료</h3>
+                <p className="text-slate-600 dark:text-slate-300">
+                  개선된 콘텐츠로 더 많은 독자에게 도달하세요
+                </p>
               </div>
-              <h3 className="text-xl font-semibold">최적화 완료</h3>
-              <p className="text-slate-600 dark:text-slate-300">
-                개선된 콘텐츠로 더 많은 독자에게 도달하세요
-              </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
