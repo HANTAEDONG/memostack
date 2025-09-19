@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# NextAuth API 경로는 크롤링 제외
+Disallow: /api/auth/
+Disallow: /api/posts/
+Disallow: /api/ai/
+
+# 관리자 페이지는 크롤링 제외
+Disallow: /dashboard/
+Disallow: /write/
+
+# 허용할 페이지들
+Allow: /
+Allow: /auth/callback
