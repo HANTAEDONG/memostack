@@ -28,13 +28,11 @@ export function usePopupAuth(): PopupAuthState {
         setIsPopupOpen(true);
 
         // 팝업 상태 확인을 위한 여러 방법 사용
-        let isPopupActive = true;
 
         const checkClosed = setInterval(() => {
           try {
             // 방법 1: window.closed 확인
             if (popup.closed) {
-              isPopupActive = false;
               clearInterval(checkClosed);
               setIsPopupOpen(false);
               setIsLoading(false);
@@ -48,7 +46,6 @@ export function usePopupAuth(): PopupAuthState {
             } catch (focusError) {
               // 포커스할 수 없으면 팝업이 닫혔거나 차단된 것으로 간주
               console.warn("팝업 포커스 실패:", focusError);
-              isPopupActive = false;
               clearInterval(checkClosed);
               setIsPopupOpen(false);
               setIsLoading(false);
@@ -57,7 +54,6 @@ export function usePopupAuth(): PopupAuthState {
           } catch (error) {
             // COOP 오류가 발생하면 팝업이 차단된 것으로 간주
             console.warn("팝업 상태 확인 중 COOP 오류:", error);
-            isPopupActive = false;
             clearInterval(checkClosed);
             setIsPopupOpen(false);
             setIsLoading(false);
@@ -70,7 +66,6 @@ export function usePopupAuth(): PopupAuthState {
           if (event.origin !== window.location.origin) return;
 
           if (event.data.type === "AUTH_SUCCESS") {
-            isPopupActive = false;
             clearInterval(checkClosed);
             setIsPopupOpen(false);
             setIsLoading(false);
@@ -83,7 +78,6 @@ export function usePopupAuth(): PopupAuthState {
             resolve(true);
             // 팝업은 콜백 페이지에서 자동으로 닫힘
           } else if (event.data.type === "AUTH_ERROR") {
-            isPopupActive = false;
             clearInterval(checkClosed);
             setIsPopupOpen(false);
             setIsLoading(false);

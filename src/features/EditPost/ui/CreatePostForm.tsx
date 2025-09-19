@@ -12,7 +12,6 @@ import {
   AlertDialogTitle,
 } from "@/shared/ui/shadcn/alert-dialog";
 import { CreatePostFormProps } from "@/entities/Post/lib/post.types";
-import CategorySelect from "@/entities/Post/ui/CategorySelect";
 import { GoogleOAuthButton, usePopupAuth } from "@/entities/Auth";
 
 const Tiptap = lazy(() => import("@/entities/TextEditor/ui/Tiptap"));
@@ -53,8 +52,9 @@ export default function CreatePostForm({
       </div>
 
       {/* 제목 입력 영역 */}
-      <div className="w-full h-14 pt-4 px-3 sm:px-5 focus:outline-none">
-        <div className="animate-pulse bg-gray-200 h-10 w-full rounded"></div>
+      <div className="w-full pt-4 px-3 sm:px-5 focus:outline-none">
+        <div className="animate-pulse bg-gray-200 h-10 w-full rounded mb-3"></div>
+        <div className="animate-pulse bg-gray-200 h-6 w-32 rounded"></div>
       </div>
 
       {/* 에디터 영역 - 로딩 상태 */}
@@ -103,29 +103,21 @@ export default function CreatePostForm({
   }
 
   return (
-    <div className="w-full h-full min-h-screen px-2 sm:px-4 bg-background">
-      {/* 카테고리 선택 영역 */}
-      <div className="mb-4 flex flex-col sm:flex-row sm:items-center gap-2">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-700">카테고리:</span>
-          <CategorySelect
-            value={category}
-            onValueChange={onCategoryChange}
-            disabled={isSaving}
+    <div className="w-full h-screen overflow-hidden px-2 sm:px-4 bg-background flex flex-col">
+      <div className="flex-1 min-h-0">
+        <Suspense fallback={<TiptapFallback />}>
+          <Tiptap
+            title={title}
+            content={content}
+            category={category}
+            onTitleChange={onTitleChange}
+            onContentChange={onContentChange}
+            onCategoryChange={onCategoryChange}
           />
-        </div>
+        </Suspense>
       </div>
 
-      <Suspense fallback={<TiptapFallback />}>
-        <Tiptap
-          title={title}
-          content={content}
-          onTitleChange={onTitleChange}
-          onContentChange={onContentChange}
-        />
-      </Suspense>
-
-      <div className="mt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
+      <div className="flex-shrink-0 mt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 pb-4">
         <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
           {isSaving && <div className="text-blue-600">자동 저장 중...</div>}
           {saveError && <div className="text-red-600">{saveError}</div>}

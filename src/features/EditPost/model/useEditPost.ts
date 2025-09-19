@@ -60,7 +60,7 @@ class EditPostService {
     const draftData = {
       title: data.title || "",
       content: data.content || "",
-      category: data.category || "general",
+      category: (data.category || "") as Category,
     };
 
     return PostAPI.createDraft(draftData);
@@ -110,7 +110,7 @@ export const useEditPost = (postId?: string) => {
     title: "",
     content: "",
     authorId: user?.id || "",
-    category: "general",
+    category: "",
   });
 
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
@@ -229,7 +229,7 @@ export const useEditPost = (postId?: string) => {
             {
               title: "",
               content: "",
-              category: "general",
+              category: "",
             },
             user.id
           );
@@ -271,7 +271,7 @@ export const useEditPost = (postId?: string) => {
         id: "",
         title: "",
         content: "",
-        category: "general",
+        category: "",
       }));
     }
   }, [finalPostId, existingPost]);
@@ -288,7 +288,7 @@ export const useEditPost = (postId?: string) => {
         {
           title: current.title,
           content: current.content,
-          category: (current.category || "general") as Category,
+          category: (current.category || "") as Category,
         },
         user.id
       );

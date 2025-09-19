@@ -47,7 +47,7 @@ export default function CreatePostFormContainer({
   const handleClearDraft = () => {
     setTitle("");
     setContent("");
-    setCategory("general");
+    setCategory("");
   };
 
   const handlePublish = async () => {
