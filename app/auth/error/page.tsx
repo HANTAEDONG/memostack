@@ -1,15 +1,9 @@
 import { Button } from "@/shared/ui/shadcn/button";
 import Link from "next/link";
 
-interface AuthErrorPageProps {
-  searchParams: Promise<{ error?: string }>;
-}
-
-export default async function AuthErrorPage({
-  searchParams,
-}: AuthErrorPageProps) {
-  const resolvedSearchParams = await searchParams;
-  const error = resolvedSearchParams?.error ?? null;
+export default function AuthErrorPage() {
+  // URL에서 직접 error 파라미터를 읽지 않고 기본 메시지 표시
+  const error = null;
 
   const getErrorMessage = (error: string | null) => {
     switch (error) {
