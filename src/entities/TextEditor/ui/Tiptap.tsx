@@ -5,9 +5,10 @@ import EditorOptions from "../lib/EditorOptions";
 import ToolbarComponent from "./ToolbarComponent";
 import useToggleDarkmode from "@/shared/hooks/useToggleDarkmode";
 import { Input } from "@/shared/ui/shadcn/input";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import CategoryInlineSelect from "@/entities/Post/ui/CategoryInlineSelect";
 import { Category } from "@/entities/Post/lib/category.types";
+import { filterImageFiles, handleImageDrop } from "../lib/image-handler";
 
 interface TiptapProps {
   title: string;
@@ -51,6 +52,23 @@ const Tiptap = ({
     const newTitle = e.target.value;
     onTitleChange(newTitle);
   };
+
+  // 드래그 앤 드롭 핸들러
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      const files = filterImageFiles(e.dataTransfer.files);
+
+      if (files.length === 0 || !editor) return;
+
+      handleImageDrop(editor, files);
+    },
+    [editor]
+  );
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+  }, []);
 
   // 스크롤 진행도 업데이트
   useEffect(() => {
@@ -123,7 +141,12 @@ const Tiptap = ({
           />
         </div>
       </div>
-      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto  pb-4">
+      <div
+        ref={scrollContainerRef}
+        className="flex-1 overflow-y-auto pb-4"
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+      >
         <EditorContent
           id="editor"
           editor={editor}
