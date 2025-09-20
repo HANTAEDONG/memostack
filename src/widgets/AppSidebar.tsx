@@ -67,7 +67,7 @@ export function AppSidebar() {
                 <SidebarMenuButton asChild isActive={pathname === "/dashboard"}>
                   <Link href="/dashboard">
                     <FileText />
-                    <span>모든 메모</span>
+                    <span>나의 메모</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
